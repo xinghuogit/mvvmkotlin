@@ -12,26 +12,25 @@ ext {
 
     dependVersion = [
             rxappcompatVersion          : '1.1.0',
-            rxsupportv4Version          : '1.0.0',
+            rxVersion                   : '1.0.0',
 
-            //**********rx-java&rx-android  start**********,//
+            //**********rx-java2&rx-android2  start**********,//
 //            rxjava1Version              : "1.3.0",
             rxJavaVersion               : "2.2.7",
             rxAndroidVersion            : "2.1.1",
             rxLifecycleComponentsVersion: "3.0.0",
-            //**********rx-java&rx-android  end**********,//
+            //**********rx-java2&rx-android2  end**********,//
 
             constraintLayoutVersion     : '1.1.3',
 
-            okHttp3Version              : "3.8.1",
-            chuckLibraryVersion         : "1.0.4",
-
-            retrofitVersion             : "2.5.0",
-            converterScalarsVersion     : "2.5.0",
-            converterGsonVersion        : "2.5.0",
-            adapterRxJava2Version       : "2.5.0",
+            //**********retrofit2  start**********//
+            retrofitVersion             : "2.7.0",
             persistentCookieJarVersion  : "v1.0.0",
-            gsonVersion                 : "2.8.5",
+            //**********retrofit2  end**********//
+
+            okHttp3Version              : "4.2.2",
+            chuckLibraryVersion         : "1.1.0",
+            gsonVersion                 : "2.8.6",
 
             eventbusVersion             : "3.1.1",
 
@@ -74,34 +73,30 @@ ext {
 
             rxappcompat           : "androidx.appcompat:appcompat:${dependVersion.rxappcompatVersion}",
             rxrecyclerview        : "androidx.recyclerview:recyclerview:${dependVersion.rxappcompatVersion}",
-            rxsupport_v4          : "androidx.legacy:legacy-support-v4:${dependVersion.xSupportV4Version}",
+            rxcardview            : "androidx.cardview:cardview:${dependVersion.rxVersion}",
 
-            //*和 rx-android-java冲突*//
-            appcompatv7           : "com.android.support:appcompat-v7:${dependVersion.buildToolsVersion}",
-            recyclerview7         : "com.android.support:recyclerview-v7:${dependVersion.buildToolsVersion}",
-            design                : "com.android.support:design:${dependVersion.buildToolsVersion}",
             constraintlayout      : "com.android.support.constraint:constraint-layout:${dependVersion.constraintLayoutVersion}",
-            cardview              : "com.android.support:cardview:${dependVersion.buildToolsVersion}",
+            design                : "com.android.support:design:${dependVersion.buildToolsVersion}",
 
-            //*start rx-java&rx-android*//
+            //*start rx-java2&rx-android2*//
 //            rxjava                : "io.reactivex:rxjava:${dependVersion.rxjava1Version}",
             rxjava                : "io.reactivex.rxjava2:rxjava:${dependVersion.rxJavaVersion}",
             rxandroid             : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxAndroidVersion}",
             rxlifecyclecomponents : "com.trello.rxlifecycle3:rxlifecycle-components:${dependVersion.rxLifecycleComponentsVersion}",
-            //*end rx-java&rx-android*//
+            //*end rx-java2&rx-android2*//
 
-            //*start retrofit*//
+            //**********start retrofit2**********//
             retrofit              : "com.squareup.retrofit2:retrofit:${dependVersion.retrofitVersion}",
-            gson                  : "com.google.code.gson:gson:${dependVersion.gsonVersion}",
-            converterscalars      : "com.squareup.retrofit2:converter-scalars:${dependVersion.converterScalarsVersion}",//ConverterFactory的Gson依赖包
-            convertergson         : "com.squareup.retrofit2:converter-gson:${dependVersion.converterGsonVersion}",  //ConverterFactory的Gson依赖包
-            adapterrxjava2        : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.adapterRxJava2Version}",//CallAdapterFactory的Rx依赖包
-            //*end retrofit*//
+            retrofitconvertergson : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofitVersion}",//ConverterFactory的Gson依赖包
+            retrofitadapterrxjava2: "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofitVersion}",//CallAdapterFactory的Rx依赖包
+            converterscalars      : "com.squareup.retrofit2:converter-scalars:${dependVersion.retrofitVersion}",
+            persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
+            //**********end retrofit2**********//
 
             okhttp3               : "com.squareup.okhttp3:okhttp:${dependVersion.okHttp3Version}",
             chucklibrary          : "com.readystatesoftware.chuck:library:${dependVersion.chuckLibraryVersion}",
+            gson                  : "com.google.code.gson:gson:${dependVersion.gsonVersion}",
 
-            persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
 
             hellodaemon           : "com.xdandroid:hellodaemon:+", // 服务保活
             eventbus              : "org.greenrobot:eventbus:${dependVersion.eventbusVersion}",

@@ -17,4 +17,8 @@ class MainViewModel(val mWeather: Weather) {
         mWeather.number++
         info.set("${mWeather.dateTime} 天气 ${mWeather.title} 第 ${mWeather.number} 次刷新")
     }
+
+    fun loadDet() {
+
+    }
 }

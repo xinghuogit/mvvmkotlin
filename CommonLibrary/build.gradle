@@ -29,12 +29,22 @@ dependencies {
     api rootProject.ext.deps.kotlin
     api rootProject.ext.deps.rxappcompat
     api rootProject.ext.deps.rxrecyclerview
+    api rootProject.ext.deps.rxcardview
 
     api rootProject.ext.deps.rxjava
     api rootProject.ext.deps.rxandroid
+
+    api rootProject.ext.deps.retrofit
+    api rootProject.ext.deps.retrofitconvertergson
+    api rootProject.ext.deps.retrofitadapterrxjava2
+
+    api rootProject.ext.deps.okhttp3
+    api rootProject.ext.deps.gson
+
 
 //    implementation 'androidx.core:core-ktx:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    api 'androidx.cardview:cardview:1.0.0'
 }
