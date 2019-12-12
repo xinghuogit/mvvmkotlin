@@ -1,0 +1,143 @@
+ext {
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 28,
+            versionCode      : 1,
+            versionName      : "0.0.1",
+
+            kotlinVersion    : '1.3.61',
+    ]
+
+    dependVersion = [
+            rxappcompatVersion          : '1.1.0',
+            rxsupportv4Version          : '1.0.0',
+
+            //**********rx-java&rx-android  start**********,//
+//            rxjava1Version              : "1.3.0",
+            rxJavaVersion               : "2.2.7",
+            rxAndroidVersion            : "2.1.1",
+            rxLifecycleComponentsVersion: "3.0.0",
+            //**********rx-java&rx-android  end**********,//
+
+            constraintLayoutVersion     : '1.1.3',
+
+            okHttp3Version              : "3.8.1",
+            chuckLibraryVersion         : "1.0.4",
+
+            retrofitVersion             : "2.5.0",
+            converterScalarsVersion     : "2.5.0",
+            converterGsonVersion        : "2.5.0",
+            adapterRxJava2Version       : "2.5.0",
+            persistentCookieJarVersion  : "v1.0.0",
+            gsonVersion                 : "2.8.5",
+
+            eventbusVersion             : "3.1.1",
+
+            greendaoVersion             : "3.2.2",
+
+            junitVersion                : '4.12',
+            truthVersion                : '0.28',
+            robolectricVersion          : '3.3',
+            mockitoVersion              : '2.8.9',
+            jsonVersion                 : '20160810',
+            supportAnnotationsVersion   : '27.1.0',
+
+            serialportVersion           : '1.0.1',// 串口
+
+            bannerVersion               : "1.4.10", // banner轮播
+            glideVersion                : "4.5.0", // glide加载图片
+
+            fastJsonVersion             : "1.2.57", // json解析
+            webSocketDemoVersion        : "3.0.1", // webSocket
+            zxingVersion                : "2.2.8",// 二维码扫描
+
+            badgeViewVersion            : "1.1.3",// 消息小圆点
+
+            xUpdateVersion              : "1.0.9",// Android 版本更新
+
+            pictureVersion              : "v2.2.3",//本地相册、拍照
+
+            basePopupVersion            : "2.2.1",//底部弹出
+
+            smartRefreshLayoutVersion   : "1.1.0-alpha-28",// 上拉刷新
+            smartRefreshHeaderVersion   : "1.1.0-alpha-28",// 下拉加载
+            swipeDelMenuLayoutVersion   : "V1.2.1",// 侧滑删除
+            flexboxVersion              : "1.1.0",// 流式布局
+
+            immersionBarVersion         : "3.0.0-beta05",// 沉浸式
+    ]
+
+    deps = [
+            kotlin                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${android.kotlinVersion}",
+
+            rxappcompat           : "androidx.appcompat:appcompat:${dependVersion.rxappcompatVersion}",
+            rxrecyclerview        : "androidx.recyclerview:recyclerview:${dependVersion.rxappcompatVersion}",
+            rxsupport_v4          : "androidx.legacy:legacy-support-v4:${dependVersion.xSupportV4Version}",
+
+            //*和 rx-android-java冲突*//
+            appcompatv7           : "com.android.support:appcompat-v7:${dependVersion.buildToolsVersion}",
+            recyclerview7         : "com.android.support:recyclerview-v7:${dependVersion.buildToolsVersion}",
+            design                : "com.android.support:design:${dependVersion.buildToolsVersion}",
+            constraintlayout      : "com.android.support.constraint:constraint-layout:${dependVersion.constraintLayoutVersion}",
+            cardview              : "com.android.support:cardview:${dependVersion.buildToolsVersion}",
+
+            //*start rx-java&rx-android*//
+//            rxjava                : "io.reactivex:rxjava:${dependVersion.rxjava1Version}",
+            rxjava                : "io.reactivex.rxjava2:rxjava:${dependVersion.rxJavaVersion}",
+            rxandroid             : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxAndroidVersion}",
+            rxlifecyclecomponents : "com.trello.rxlifecycle3:rxlifecycle-components:${dependVersion.rxLifecycleComponentsVersion}",
+            //*end rx-java&rx-android*//
+
+            //*start retrofit*//
+            retrofit              : "com.squareup.retrofit2:retrofit:${dependVersion.retrofitVersion}",
+            gson                  : "com.google.code.gson:gson:${dependVersion.gsonVersion}",
+            converterscalars      : "com.squareup.retrofit2:converter-scalars:${dependVersion.converterScalarsVersion}",//ConverterFactory的Gson依赖包
+            convertergson         : "com.squareup.retrofit2:converter-gson:${dependVersion.converterGsonVersion}",  //ConverterFactory的Gson依赖包
+            adapterrxjava2        : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.adapterRxJava2Version}",//CallAdapterFactory的Rx依赖包
+            //*end retrofit*//
+
+            okhttp3               : "com.squareup.okhttp3:okhttp:${dependVersion.okHttp3Version}",
+            chucklibrary          : "com.readystatesoftware.chuck:library:${dependVersion.chuckLibraryVersion}",
+
+            persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
+
+            hellodaemon           : "com.xdandroid:hellodaemon:+", // 服务保活
+            eventbus              : "org.greenrobot:eventbus:${dependVersion.eventbusVersion}",
+            greendao              : "org.greenrobot:greendao:${dependVersion.greendaoVersion}",
+
+            //*start logger*//
+            junit                 : "junit:junit:${dependVersion.junitVersion}",
+            truth                 : "com.google.truth:truth:${dependVersion.truthVersion}",
+            robolectric           : "org.robolectric:robolectric:${dependVersion.robolectricVersion}",
+            mockito               : "org.mockito:mockito-core:${dependVersion.mockitoVersion}",
+            json                  : "org.json:json:${dependVersion.jsonVersion}",
+            supportAnnotations    : "com.android.support:support-annotations:${dependVersion.supportAnnotationsVersion}",
+            //*end logger*//
+
+            serialport            : "com.github.licheedev.Android-SerialPort-API:serialport:${dependVersion.serialportVersion}", // 串口
+
+            banner                : "com.youth.banner:banner:${dependVersion.bannerVersion}",//banner轮播
+            glide                 : "com.github.bumptech.glide:glide:${dependVersion.glideVersion}", // glide图片加载
+
+            fastjson              : "com.alibaba:fastjson:${dependVersion.fastJsonVersion}",//json解析
+            websocketdemo         : "com.github.0xZhangKe:WebSocketDemo:${dependVersion.webSocketDemoVersion}",// webSocket
+            zxing                 : "com.github.yuzhiqiang1993:zxing:${dependVersion.zxingVersion}",// 二维码扫描
+
+            badgeview             : "q.rorbin:badgeview:${dependVersion.badgeViewVersion}", // 消息小圆点
+            xupdate               : "com.github.xuexiangjys:XUpdate:${dependVersion.xUpdateVersion}",
+
+            smartrefreshlayout    : "com.scwang.smartrefresh:SmartRefreshLayout:${dependVersion.smartRefreshLayoutVersion}",//上拉刷新
+            smartrefreshheader    : "com.scwang.smartrefresh:SmartRefreshHeader:${dependVersion.smartRefreshLayoutVersion}",//下拉加载
+            swipedelmenulayout    : "com.github.mcxtzhang:SwipeDelMenuLayout:${dependVersion.swipeDelMenuLayoutVersion}", // 侧滑删除
+            flexbox               : "com.google.android:flexbox:${dependVersion.flexboxVersion}",//流式布局
+
+            picture               : "com.github.LuckSiege.PictureSelector:picture_library:${dependVersion.pictureVersion}",//本地相册、拍照
+            basePopup             : "com.github.razerdp:BasePopup:${dependVersion.basePopupVersion}",//
+
+            immersionbar          : "com.gyf.immersionbar:immersionbar:${dependVersion.immersionBarVersion}", // 基础依赖包，必须要依赖
+            immersionbarcomponents: "com.gyf.immersionbar:immersionbar-components:${dependVersion.immersionBarVersion}",// fragment快速实现（可选）
+            immersionBarktx       : "com.gyf.immersionbar:immersionbar-ktx:${dependVersion.immersionBarVersion}", // kotlin扩展（可选）
+    ]
+}

@@ -26,12 +26,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{activitymain.info,default= 今天20191128阴天刷新了2次}" />
+            android:text="@{activitymain.info,default= @string/today_refresh}" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->activitymain.addNumber()}" />
+            android:onClick="@{()->activitymain.addNumber()}"
+            android:text="点击" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </layout>

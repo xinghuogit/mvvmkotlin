@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">mvvmkotlin</string>
+
+    <string name="today_refresh">今天20191128阴天刷新了2次</string>
 </resources>
