@@ -190,7 +190,7 @@ object RxJavaTestKotlin {
                 override fun apply(t: Int): ObservableSource<String> {
                     val list = ArrayList<String>()
                     for (i in 0..3) {
-//                        println("flatMap$t")
+//                        println("flatMap$t1")
                         list.add("this$t")
                     }
                     return Observable.fromIterable(list)
@@ -319,7 +319,7 @@ object RxJavaTestKotlin {
 
             override fun onNext(t: Int) {
                 println("链式onNext:$t")
-//                if (t == 6 && disposable != null) {
+//                if (t1 == 6 && disposable != null) {
 //                    println("链式disposable.isDisposed:" + disposable.isDisposed)
 //                    disposable.dispose()
 //                    println("链式disposable.isDisposed:" + disposable.isDisposed)

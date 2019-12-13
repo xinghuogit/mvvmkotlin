@@ -1,2 +1,2 @@
-include ':app', ':CommonLibrary'
+include ':app', ':CommonLibrary', ':rxJava2Retrofit2'
 rootProject.name='mvvmkotlin'

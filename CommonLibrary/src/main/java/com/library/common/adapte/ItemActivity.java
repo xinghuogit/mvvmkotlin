@@ -37,6 +37,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         mData.add("4");
         mData.add("5");
 
+        studyRxJava = (Button) findViewById(R.id.studyRxJava);
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mainRecyclerView.setAdapter(new MainAdapter());
@@ -75,7 +76,9 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                                 break;
                             case "发送1.2.3后再发送onComplete的链式操作":
                                 Log.i(TAG, "onClick: 2");
-//                                BasicRxJavaActivity.start(ItemActivity.this);
+                                Log.i(TAG, "onClick: 2");
+                                Log.i(TAG, "onClick: 2");
+                                Log.i(TAG, "onClick: 2");
                                 break;
                             default:
                                 break;
@@ -90,9 +93,12 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.studyRxJava:
-//
-//                break;
+            case 1:
+                Log.i(TAG, "onClick: 1");
+                break;
+            case 2:
+                Log.i(TAG, "onClick: 2");
+                break;
             default:
                 break;
         }
