@@ -1,99 +1,88 @@
 package com.library.common.adapte
 
-import android.os.Bundle
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.library.common.R
 
 import java.util.ArrayList
 
-class t1 : AppCompatActivity(), View.OnClickListener {
-
-    private var studyRxJava: Button? = null
-    private var mainRecyclerView: RecyclerView? = null
+/*************************************************************************************************
+ * 日期：2019/12/16 15:13
+ * 作者：李加蒙
+ * 邮箱：1829870839@qq.com
+ * 描述：
+ */
+class t1 : RecyclerView.Adapter<t1.MainViewHolder> {
 
     private val mData = ArrayList<String>()
+    private var context: Context? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item)
 
-        //        mData = Arrays.asList(getResources().getStringArray(R.array.basis_rxjava));
-        mData.add("1")
-        mData.add("2")
-        mData.add("3")
-        mData.add("4")
-        mData.add("5")
+    constructor() {}
 
-        studyRxJava = findViewById<View>(R.id.studyRxJava) as Button
-        mainRecyclerView = findViewById<View>(R.id.mainRecyclerView) as RecyclerView
-        mainRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        mainRecyclerView!!.adapter = MainAdapter()
+    constructor(context: Context) {
+        this.context = context
     }
 
-    private inner class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-            return MainViewHolder(
-                LayoutInflater.from(this@t1).inflate(
-                    R.layout.item_recycler,
-                    parent,
-                    false
-                )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): t1.MainViewHolder {
+        return MainViewHolder(
+            LayoutInflater.from(context).inflate(
+                R.layout.item_recycler,
+                parent,
+                false
             )
-        }
+        )
+    }
 
-        override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-            holder.tv.text = mData[position]
-        }
+    override fun onBindViewHolder(holder: t1.MainViewHolder, position: Int) {
+        holder.tv.text = mData[position]
+    }
 
-        override fun getItemCount(): Int {
-            return mData.size
-        }
+    fun upDate(mData: List<String>) {
+        this.mData.clear()
+        addDate(mData)
+    }
 
-        internal inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var tv: TextView
 
-            init {
-                tv = itemView.findViewById<View>(R.id.itemRecyclerName) as TextView
-                tv.setOnClickListener {
-                    when (tv.text.toString().trim { it <= ' ' }) {
-                        "发送1.2.3后再发送onComplete" -> Log.i(TAG, "onClick: 1")
-                        "发送1.2.3后再发送onComplete的链式操作" -> {
-                            Log.i(TAG, "onClick: 2")
-                            Log.i(TAG, "onClick: 2")
-                            Log.i(TAG, "onClick: 2")
-                            Log.i(TAG, "onClick: 2")
-                        }
-                        else -> {
-                        }
+    fun addDate(mData: List<String>?) {
+        if (mData != null) this.mData.addAll(mData)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int {
+        return mData.size
+    }
+
+    inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var tv: TextView
+
+        init {
+            tv = itemView.findViewById<View>(R.id.itemRecyclerName) as TextView
+            tv.setOnClickListener {
+                when (tv.text.toString().trim { it <= ' ' }) {
+                    "发送1.2.3后再发送onComplete" -> Log.i(TAG, "onClick: 1")
+                    "发送1.2.3后再发送onComplete的链式操作" -> {
+                        Log.i(TAG, "onClick: 2")
+                        Log.i(TAG, "onClick: 2")
+                        Log.i(TAG, "onClick: 2")
+                        Log.i(TAG, "onClick: 2")
+                    }
+                    else -> {
                     }
                 }
             }
         }
     }
 
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            1 -> Log.i(TAG, "onClick: 1")
-            2 -> Log.i(TAG, "onClick: 2")
-            else -> {
-            }
-        }
-    }
-
     companion object {
-        private val TAG = "t1"
+        private val TAG = "Main1Adapter"
     }
-
 
 }

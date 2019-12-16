@@ -24,6 +24,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mainRecyclerView;
 
     private List<String> mData = new ArrayList<>();
+    private MainAdapter mainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,20 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
 
         studyRxJava = (Button) findViewById(R.id.studyRxJava);
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
-        mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mainRecyclerView.setAdapter(new MainAdapter());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mainRecyclerView.setLayoutManager(linearLayoutManager);
+        if (mainAdapter == null) {
+            mainAdapter = new MainAdapter();
+        }
+        mainRecyclerView.setAdapter(mainAdapter);
+        mainAdapter.upDate(mData);
     }
 
     private class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+
+        private List<String> mData = new ArrayList<>();
+
         @Override
         public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MainViewHolder mainViewHolder = new MainViewHolder(LayoutInflater.from
@@ -54,6 +64,17 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onBindViewHolder(MainViewHolder holder, int position) {
             holder.tv.setText(mData.get(position));
+        }
+
+        public void upDate(List<String> mData) {
+            this.mData.clear();
+            addDate(mData);
+        }
+
+
+        public void addDate(List<String> mData) {
+            if (mData != null) this.mData.addAll(mData);
+            notifyDataSetChanged();
         }
 
         @Override

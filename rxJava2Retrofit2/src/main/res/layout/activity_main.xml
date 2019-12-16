@@ -7,24 +7,26 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/space_5" />
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -46,8 +48,13 @@
                     android:layout_height="wrap_content"
                     android:text="createJava" />
 
-
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

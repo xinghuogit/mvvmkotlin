@@ -22,6 +22,7 @@ class t : AppCompatActivity(), View.OnClickListener {
     private var mainRecyclerView: RecyclerView? = null
 
     private val mData = ArrayList<String>()
+    private var mainAdapter: MainAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +35,22 @@ class t : AppCompatActivity(), View.OnClickListener {
         mData.add("4")
         mData.add("5")
 
-//        studyRxJava = findViewById<View>(R.id.studyRxJava) as Button
+        studyRxJava = findViewById<View>(R.id.studyRxJava) as Button
         mainRecyclerView = findViewById<View>(R.id.mainRecyclerView) as RecyclerView
-        mainRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        mainRecyclerView!!.adapter = MainAdapter()
-
-        studyRxJava!!.setOnClickListener(){
-
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        mainRecyclerView!!.layoutManager = linearLayoutManager
+        if (mainAdapter == null) {
+            mainAdapter = MainAdapter()
         }
+        mainRecyclerView!!.adapter = mainAdapter
+        mainAdapter!!.upDate(mData)
     }
 
     private inner class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+
+        private val mData = ArrayList<String>()
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
             return MainViewHolder(
                 LayoutInflater.from(this@t).inflate(
@@ -59,6 +65,17 @@ class t : AppCompatActivity(), View.OnClickListener {
             holder.tv.text = mData[position]
         }
 
+        fun upDate(mData: List<String>) {
+            this.mData.clear()
+            addDate(mData)
+        }
+
+
+        fun addDate(mData: List<String>?) {
+            if (mData != null) this.mData.addAll(mData)
+            notifyDataSetChanged()
+        }
+
         override fun getItemCount(): Int {
             return mData.size
         }
@@ -71,10 +88,15 @@ class t : AppCompatActivity(), View.OnClickListener {
                 tv.setOnClickListener {
                     when (tv.text.toString().trim { it <= ' ' }) {
                         "发送1.2.3后再发送onComplete" -> Log.i(TAG, "onClick: 1")
-                        "发送1.2.3后再发送onComplete的链式操作" -> Log.i(TAG, "onClick: 2")
+                        "发送1.2.3后再发送onComplete的链式操作" -> {
+                            Log.i(TAG, "onClick: 2")
+                            Log.i(TAG, "onClick: 2")
+                            Log.i(TAG, "onClick: 2")
+                            Log.i(TAG, "onClick: 2")
+                        }
                         else -> {
                         }
-                    }//                                BasicRxJavaActivity.start(t1.this);
+                    }
                 }
             }
         }
@@ -91,7 +113,7 @@ class t : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "t1"
+        private val TAG = "t"
     }
 
 

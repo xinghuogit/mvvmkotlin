@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">RxJava2</string>
+
+    <string name="create_title">create</string>
+    <string name="create_desc">create操作符应该是最常见的操作符了，主要用于产生一个Obserable被观察者对象，为了方便大家的认知，
+        以后的教程中统一把被观察者Observable称为发射器（上游事件），观察者Observer称为接收器（下游事件）。</string>
+
+    <string name="map_title">map</string>
+    <string name="map_desc">Map基本算是RxJava中一个最简单的操作符了，熟悉RxJava1.x的知道，它的作用是对发射时间发送的每一个事件应用一个函数，
+        是的每一个事件都按照指定的函数去变化，而在2.x中它的作用几乎一致。</string>
+
+    <string name="zip_title">zip</string>
+    <string name="zip_desc">zip专用于合并事件，该合并不是连接（连接操作符后面会说），而是两两配对，
+        也就意味着，最终配对出的Observable发射事件数目只和少的那个相同。</string>
+
+    <string name="concat_title">concat</string>
+    <string name="concat_desc">对于单一的把两个发射器连接成一个发射器，虽然zip不能完成，但我们还是可以自力更生，
+        官方提供的concat让我们的问题得到了完美解决。</string>
+
+    <string name="flatmap_title">FlatMap</string>
+    <string name="flatmap_desc">FlatMap是一个很有趣的东西，我坚信你在实际开发中会经常用到。
+        它可以把一个发射器Observable通过某种方法转换为多个Observables，
+        然后再把这些分散的Observables装进一个单一的发射器Observable。
+        但有个需要注意的是，flatMap并不能保证事件的顺序，如果需要保证，需要用到我们下面要讲的ConcatMap。</string>
+
+    <string name="concatmap_title">concatMap</string>
+    <string name="concatmap_desc">上面其实就说了，concatMap与FlatMap的唯一区别就是concatMap保证了顺序，
+        所以，我们就直接把flatMap替换为concatMap验证吧。</string>
 </resources>

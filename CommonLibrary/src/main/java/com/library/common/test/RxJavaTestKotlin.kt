@@ -193,7 +193,7 @@ object RxJavaTestKotlin {
 //                        println("flatMap$t1")
                         list.add("this$t")
                     }
-                    return Observable.fromIterable(list)
+                    return Observable.fromIterable(list).delay(10,TimeUnit.MILLISECONDS)
                 }
             })
             .subscribe {

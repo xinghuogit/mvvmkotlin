@@ -1,47 +1,66 @@
 package com.spark.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val TAG: String = "MainActivity";
 
-    private var tv: TextView? = null
-    private var createKotlin: Button? = null
-    private var createJava: Button? = null
+//    private var recyclerView: RecyclerView? = null
+//    private var tv: TextView? = null
+//    private var createKotlin: Button? = null
+//    private var createJava: Button? = null
+
+    private var rxJava2Adapter: RxJava2Adapter? = null;
+    private var lists = ArrayList<RxJavaData>();
 
     private var stringBuffer: StringBuffer = StringBuffer()
-    
     private var mRxJavaToKotlin: RxJavaToKotlin = RxJavaToKotlin()
     private var mRxJavaToJava: RxJavaToJava = RxJavaToJava()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv = findViewById(R.id.tv);
-        createKotlin = findViewById(R.id.createKotlin);
-        createJava = findViewById(R.id.createJava);
+//        recyclerView = findViewById(R.id.recyclerView);
+//        tv = findViewById(R.id.tv);
+//        createKotlin = findViewById(R.id.createKotlin);
+//        createJava = findViewById(R.id.createJava);
+//
+//        createKotlin!!.setOnClickListener(this)
+//        createJava!!.setOnClickListener(this)
 
-        createKotlin!!.setOnClickListener(this)
-        createJava!!.setOnClickListener(this)
+        lists.add(RxJavaData(getString(R.string.create_title), getString(R.string.create_desc)))
+        lists.add(RxJavaData(getString(R.string.map_title), getString(R.string.map_desc)))
+        lists.add(RxJavaData(getString(R.string.zip_title), getString(R.string.zip_desc)))
+        lists.add(RxJavaData(getString(R.string.concat_title), getString(R.string.concat_desc)))
+        lists.add(RxJavaData(getString(R.string.flatmap_title), getString(R.string.flatmap_desc)))
+        lists.add(RxJavaData(getString(R.string.concatmap_title), getString(R.string.concatmap_desc)))
+
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView!!.layoutManager = linearLayoutManager
+
+        if (rxJava2Adapter == null) rxJava2Adapter = RxJava2Adapter(this);
+        recyclerView!!.adapter = rxJava2Adapter;
+        rxJava2Adapter!!.upDate(lists)
     }
+
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.createKotlin -> {
                 mRxJavaToKotlin.create(stringBuffer)
-                tv!!.setText(stringBuffer)
+//                tv!!.setText(stringBuffer)
             }
             R.id.createJava -> {
                 mRxJavaToJava.create(stringBuffer)
-                tv!!.setText(stringBuffer)
+//                tv!!.setText(stringBuffer)
             }
             else -> {
-                println("")
+                println("其余")
             }
         }
     }
