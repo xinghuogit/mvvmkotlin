@@ -7,7 +7,7 @@
 
     <string name="map_title">map</string>
     <string name="map_desc">Map基本算是RxJava中一个最简单的操作符了，熟悉RxJava1.x的知道，它的作用是对发射时间发送的每一个事件应用一个函数，
-        是的每一个事件都按照指定的函数去变化，而在2.x中它的作用几乎一致。</string>
+        使得每一个事件都按照指定的函数去变化，而在2.x中它的作用几乎一致。</string>
 
     <string name="zip_title">zip</string>
     <string name="zip_desc">zip专用于合并事件，该合并不是连接（连接操作符后面会说），而是两两配对，

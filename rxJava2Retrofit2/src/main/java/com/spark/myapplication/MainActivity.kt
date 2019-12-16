@@ -37,7 +37,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         lists.add(RxJavaData(getString(R.string.zip_title), getString(R.string.zip_desc)))
         lists.add(RxJavaData(getString(R.string.concat_title), getString(R.string.concat_desc)))
         lists.add(RxJavaData(getString(R.string.flatmap_title), getString(R.string.flatmap_desc)))
-        lists.add(RxJavaData(getString(R.string.concatmap_title), getString(R.string.concatmap_desc)))
+        lists.add(
+            RxJavaData(
+                getString(R.string.concatmap_title),
+                getString(R.string.concatmap_desc)
+            )
+        )
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -45,7 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if (rxJava2Adapter == null) rxJava2Adapter = RxJava2Adapter(this);
         recyclerView!!.adapter = rxJava2Adapter;
-        rxJava2Adapter!!.upDate(lists)
+        rxJava2Adapter!!.upDate(lists.reversed())
     }
 
 
