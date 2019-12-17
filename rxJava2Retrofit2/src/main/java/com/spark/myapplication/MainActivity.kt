@@ -37,12 +37,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         lists.add(RxJavaData(getString(R.string.zip_title), getString(R.string.zip_desc)))
         lists.add(RxJavaData(getString(R.string.concat_title), getString(R.string.concat_desc)))
         lists.add(RxJavaData(getString(R.string.flatmap_title), getString(R.string.flatmap_desc)))
-        lists.add(
-            RxJavaData(
-                getString(R.string.concatmap_title),
-                getString(R.string.concatmap_desc)
-            )
-        )
+        lists.add(RxJavaData(getString(R.string.concatmap_title), getString(R.string.concatmap_desc)))
+        lists.add(RxJavaData(getString(R.string.distinct_title), getString(R.string.distinct_desc)))
+        lists.add(RxJavaData(getString(R.string.filter_title), getString(R.string.filter_desc)))
+        lists.add(RxJavaData(getString(R.string.buffer_title), getString(R.string.buffer_desc)))
+        lists.add(RxJavaData(getString(R.string.timer_title), getString(R.string.timer_desc)))
+        lists.add(RxJavaData(getString(R.string.interval_title), getString(R.string.interval_desc)))
+        lists.add(RxJavaData(getString(R.string.doOnNext_title), getString(R.string.doOnNext_desc)))
+        lists.add(RxJavaData(getString(R.string.skip_title), getString(R.string.skip_desc)))
+        lists.add(RxJavaData(getString(R.string.take_title), getString(R.string.take_desc)))
+        lists.add(RxJavaData(getString(R.string.just_title), getString(R.string.just_desc)))
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL

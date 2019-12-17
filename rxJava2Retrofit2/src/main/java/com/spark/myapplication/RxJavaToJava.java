@@ -1,5 +1,7 @@
 package com.spark.myapplication;
 
+import com.library.common.utils.DateUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /*************************************************************************************************
@@ -24,6 +27,225 @@ import io.reactivex.schedulers.Schedulers;
  * 描述：
  ************************************************************************************************/
 public class RxJavaToJava {
+
+    /**
+     * just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。
+     */
+    public String just(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava just");
+        stringBuffer.append("\n");
+        Observable.just(6, 2, 3)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * take，接受一个long型参数count，代表至多接收count个数据。
+     */
+    public String take(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava take 显示前面1个");
+        stringBuffer.append("\n");
+        Observable.just(6, 2, 3, 4, 5)
+                .take(1)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * skip很有意思，其实作用就和字面意思一样，接受一个long型参数count，代表跳过count个数目开始接收。
+     */
+    public String skip(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava skip 跳过3个 直接显示4，5");
+        stringBuffer.append("\n");
+        Observable.just(1, 2, 3, 4, 5)
+                .skip(3)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 其实觉得 doOnNext 应该不算一个操作符，但考虑到其常用性，我们还是咬咬牙将它放在了这里。
+     * 它的作用是让订阅者在接收到数据之前干点有意思的事情。假如我们在获取到数据之前想先保存一下它，无疑我们可以这样实现。
+     */
+    public String doOnNext(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava doOnNext");
+        stringBuffer.append("\n");
+        Observable.just(1, 2, 3)
+                .doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("保存成功" + integer);
+                        stringBuffer.append("\n");
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 如同我们上面可说，interval操作符用于间隔时间执行某个操作，其接受三个参数，分别是第一次发送延迟，间隔时间，时间单位。
+     * 如同Log日志一样，第一次延迟了3秒后接收到，后面每次间隔了2秒。
+     * 然而，心细的小伙伴可能会发现，由于我们这个是间隔执行，所以当我们的Activity都销毁的时候，
+     * 实际上这个操作还依然在进行，所以，我们得花点小心思让我们在不需要它的时候干掉它。
+     * 查看源码发现，我们subscribe(Cousumer<?superT>onNext)返回的是Disposable，我们可以在这上面做文章。
+     */
+    Disposable disposableInterval = null;
+    int i = 0;
+
+    public String interval(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava timer");
+        stringBuffer.append("\n");
+        stringBuffer.append("3秒后见log日志,当前：" + DateUtils.INSTANCE.getDateTimeToStr(System.currentTimeMillis()));
+        stringBuffer.append("\n");
+        disposableInterval = Observable.interval(3, 2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long t) throws Exception {
+                        i++;
+                        System.out.println("2秒后：" + DateUtils.INSTANCE.getDateTimeToStr(System.currentTimeMillis()));
+                        if (i == 2 && disposableInterval != null) {
+                            disposableInterval.dispose();
+                            i = 0;
+                        }
+                        System.out.println(" disposable.isDisposed()：" + disposableInterval.isDisposed());
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * timer很有意思，相当于一个定时任务。在1.x中它还可以执行间隔逻辑，但在2.x中此功能被交给了interval，下一个会介绍。
+     * 但需要注意的是，timer和interval均默认在新线程。
+     */
+    public String timer(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava timer");
+        stringBuffer.append("\n");
+        stringBuffer.append("两秒后见log日志,当前：" + DateUtils.INSTANCE.getDateTimeToStr(System.currentTimeMillis()));
+        stringBuffer.append("\n");
+        Observable.timer(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long t) throws Exception {
+                        System.out.println("两秒后：" + DateUtils.INSTANCE.getDateTimeToStr(System.currentTimeMillis()));
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+
+    /**
+     * @buffer 如图，我们把1,2,3,4,5依次发射出来，经过buffer操作符，
+     * 其中参数skip为3，count为4，而我们的输出依次是123，5。显而易见，
+     * 我们buffer的第一个参数是count，代表最大取值，在事件足够的时候，一般都是取count个值，
+     * 然后每次跳过skip个事件。其实看Log日志，我相信大家都明白了。
+     */
+    public String buffer(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava buffer");
+        stringBuffer.append("\n");
+        Observable.just(1, 2, 3, 4, 5)
+                .buffer(3, 4)////skip每次跳过几个步长  count每次最多几个
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        if (integers != null) {
+                            stringBuffer.append("accept()t.size" + integers.size());
+                            stringBuffer.append("\n");
+                            for (Integer i : integers) {
+                                stringBuffer.append("accept()i" + i);
+                                stringBuffer.append("\n");
+                            }
+                        }
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * @filter 可以看到，我们过滤器舍去了小于 10 的值，所以最好的输出只有 10, 25。
+     */
+    public String filter(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava filter");
+        stringBuffer.append("\n");
+        Observable.just(1, 10, -65, 25)
+                .filter(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(Integer integer) throws Exception {
+                        return integer >= 10; //过滤小于10的
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * @distinct Log 日志显而易见，我们在经过 dinstinct() 后接收器接收到的事件只有1,2,3了。
+     */
+    public String distinct(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava distinct");
+        stringBuffer.append("\n");
+        Observable.just(1, 1, 2, 3, 3)
+                .distinct()
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
 
     /**
      * @concatMap 上面其实就说了，concatMap与FlatMap的唯一区别就是concatMap保证了顺序，

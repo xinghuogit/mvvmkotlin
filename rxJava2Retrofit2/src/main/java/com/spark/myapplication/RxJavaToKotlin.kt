@@ -1,11 +1,16 @@
 package com.spark.myapplication
 
-import io.reactivex.*
+import com.library.common.utils.DateUtils
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.ObservableSource
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
+import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
 import java.util.concurrent.TimeUnit
@@ -17,6 +22,209 @@ import java.util.concurrent.TimeUnit
  * 描述：
  */
 class RxJavaToKotlin {
+    /**
+     * just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。
+     */
+    fun just(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin just")
+        stringBuffer.append("\n")
+        Observable.just("1", "2", "3")
+            .subscribe(object : Consumer<String> {
+                override fun accept(t: String?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * take，接受一个long型参数count，代表至多接收count个数据。
+     */
+    fun take(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin take 显示前面2个")
+        stringBuffer.append("\n")
+        Observable.just(1, 2, 3, 4, 5)
+            .take(2)
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * skip很有意思，其实作用就和字面意思一样，接受一个long型参数count，代表跳过count个数目开始接收。
+     */
+    fun skip(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin skip 跳过4个 直接显示5")
+        stringBuffer.append("\n")
+        Observable.just(1, 2, 3, 4, 5)
+            .skip(4)//跳过4个 直接显示5
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * 其实觉得 doOnNext 应该不算一个操作符，但考虑到其常用性，我们还是咬咬牙将它放在了这里。
+     * 它的作用是让订阅者在接收到数据之前干点有意思的事情。假如我们在获取到数据之前想先保存一下它，无疑我们可以这样实现。
+     */
+    fun doOnNext(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin doOnNext")
+        stringBuffer.append("\n")
+        Observable.just(1, 2, 3)
+            .doOnNext(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("保存成功i$t")
+                    stringBuffer.append("\n")
+                }
+            }).subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * 如同我们上面可说，interval操作符用于间隔时间执行某个操作，其接受三个参数，分别是第一次发送延迟，间隔时间，时间单位。
+     * 如同Log日志一样，第一次延迟了2秒后接收到，后面每次间隔了3秒。
+     * 然而，心细的小伙伴可能会发现，由于我们这个是间隔执行，所以当我们的Activity都销毁的时候，
+     * 实际上这个操作还依然在进行，所以，我们得花点小心思让我们在不需要它的时候干掉它。
+     * 查看源码发现，我们subscribe(Cousumer<?superT>onNext)返回的是Disposable，我们可以在这上面做文章。
+     */
+    var disposableInterval: Disposable? = null;
+
+    fun interval(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin interval")
+        stringBuffer.append("2秒后见log日志,当前：${DateUtils.getDateTimeToStr(System.currentTimeMillis())}")
+        stringBuffer.append("\n")
+        var i: Int = 0
+        disposableInterval = Observable.interval(2, 3, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Consumer<Long> {
+                override fun accept(t: Long?) {
+                    i++
+                    println("3秒后：${DateUtils.getDateTimeToStr(System.currentTimeMillis())}")
+                    if (i == 2 && disposableInterval != null) {
+                        disposableInterval!!.dispose()
+                    }
+                    println("mDisposable!!.isDisposed：${disposableInterval!!.isDisposed}")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * timer很有意思，相当于一个定时任务。在1.x中它还可以执行间隔逻辑，但在2.x中此功能被交给了interval，下一个会介绍。
+     * 但需要注意的是，timer和interval均默认在新线程。
+     */
+    fun timer(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin timer")
+        stringBuffer.append("\n")
+        stringBuffer.append("两秒后见log日志,当前：${DateUtils.getDateTimeToStr(System.currentTimeMillis())}")
+        stringBuffer.append("\n")
+        Observable.timer(2, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Consumer<Long> {
+                override fun accept(t: Long?) {
+                    println("两秒后：${DateUtils.getDateTimeToStr(System.currentTimeMillis())}")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * @buffer 如图，我们把1,2,3,4,5依次发射出来，经过buffer操作符，
+     * 其中参数skip为4，count为4，而我们的输出依次是1234，5。显而易见，
+     * 我们buffer的第一个参数是count，代表最大取值，在事件足够的时候，一般都是取count个值，
+     * 然后每次跳过skip个事件。其实看Log日志，我相信大家都明白了。
+     */
+    fun buffer(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin buffer")
+        stringBuffer.append("\n")
+        Observable.just(1, 2, 3, 4, 5)
+            .buffer(4, 4) //skip每次跳过几个步长  count每次最多几个
+            .subscribe(object : Consumer<List<Int>> {
+                override fun accept(t: List<Int>?) {
+                    if (t != null) {
+                        stringBuffer.append("accept()t.size${t.size}")
+                        stringBuffer.append("\n")
+                        for (i in t) {
+                            stringBuffer.append("accept()i$i")
+                            stringBuffer.append("\n")
+                        }
+                    }
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+
+    /**
+     * @filter 可以看到，我们过滤器舍去了小于 10 的值，所以最好的输出只有 10, 25。
+     */
+    fun filter(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin filter")
+        stringBuffer.append("\n")
+        Observable.just(1, 10, -65, 25)
+            .filter(object : Predicate<Int> {
+                override fun test(t: Int): Boolean {
+                    return t >= 10//过滤小于10的
+                }
+            }).subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * @distinct Log 日志显而易见，我们在经过 dinstinct() 后接收器接收到的事件只有1,2,3了。
+     */
+    fun distinct(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin distinct")
+        stringBuffer.append("\n")
+        Observable.just(1, 1, 2, 3, 3)
+            .distinct()
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
 
     /**
      * @concatMap 上面其实就说了，concatMap与FlatMap的唯一区别就是concatMap保证了顺序，
@@ -58,7 +266,6 @@ class RxJavaToKotlin {
                     stringBuffer.append("\n")
                 }
             })
-
         return stringBuffer.toString()
     }
 

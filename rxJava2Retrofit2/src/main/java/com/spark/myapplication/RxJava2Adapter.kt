@@ -20,7 +20,6 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private var mRxJavaToKotlin: RxJavaToKotlin = RxJavaToKotlin()
     private var mRxJavaToJava: RxJavaToJava = RxJavaToJava()
 
-
     constructor(mContext: Context?) : super() {
         this.mContext = mContext
     }
@@ -78,6 +77,33 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 mContext!!.getString(R.string.concatmap_title) -> {
                     mRxJavaToKotlin.concatMap(stringBuffer)
                 }
+                mContext!!.getString(R.string.distinct_title) -> {
+                    mRxJavaToKotlin.distinct(stringBuffer)
+                }
+                mContext!!.getString(R.string.filter_title) -> {
+                    mRxJavaToKotlin.filter(stringBuffer)
+                }
+                mContext!!.getString(R.string.buffer_title) -> {
+                    mRxJavaToKotlin.buffer(stringBuffer)
+                }
+                mContext!!.getString(R.string.timer_title) -> {
+                    mRxJavaToKotlin.timer(stringBuffer)
+                }
+                mContext!!.getString(R.string.interval_title) -> {
+                    mRxJavaToKotlin.interval(stringBuffer)
+                }
+                mContext!!.getString(R.string.doOnNext_title) -> {
+                    mRxJavaToKotlin.doOnNext(stringBuffer)
+                }
+                mContext!!.getString(R.string.skip_title) -> {
+                    mRxJavaToKotlin.skip(stringBuffer)
+                }
+                mContext!!.getString(R.string.take_title) -> {
+                    mRxJavaToKotlin.take(stringBuffer)
+                }
+                mContext!!.getString(R.string.just_title) -> {
+                    mRxJavaToKotlin.just(stringBuffer)
+                }
             }
 
             viewHolder.itemView.tvContent!!.setText(stringBuffer)
@@ -102,8 +128,34 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 mContext!!.getString(R.string.concatmap_title) -> {
                     mRxJavaToJava.concatMap(stringBuffer)
                 }
+                mContext!!.getString(R.string.distinct_title) -> {
+                    mRxJavaToJava.distinct(stringBuffer)
+                }
+                mContext!!.getString(R.string.filter_title) -> {
+                    mRxJavaToJava.filter(stringBuffer)
+                }
+                mContext!!.getString(R.string.buffer_title) -> {
+                    mRxJavaToJava.buffer(stringBuffer)
+                }
+                mContext!!.getString(R.string.timer_title) -> {
+                    mRxJavaToJava.timer(stringBuffer)
+                }
+                mContext!!.getString(R.string.interval_title) -> {
+                    mRxJavaToJava.interval(stringBuffer)
+                }
+                mContext!!.getString(R.string.doOnNext_title) -> {
+                    mRxJavaToJava.doOnNext(stringBuffer)
+                }
+                mContext!!.getString(R.string.skip_title) -> {
+                    mRxJavaToJava.skip(stringBuffer)
+                }
+                mContext!!.getString(R.string.take_title) -> {
+                    mRxJavaToJava.take(stringBuffer)
+                }
+                mContext!!.getString(R.string.just_title) -> {
+                    mRxJavaToJava.just(stringBuffer)
+                }
             }
-
             viewHolder.itemView.tvContent!!.setText(stringBuffer)
         }
     }

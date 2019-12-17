@@ -26,4 +26,35 @@
     <string name="concatmap_title">concatMap</string>
     <string name="concatmap_desc">上面其实就说了，concatMap与FlatMap的唯一区别就是concatMap保证了顺序，
         所以，我们就直接把flatMap替换为concatMap验证吧。</string>
+
+    <string name="distinct_title">distinct</string>
+    <string name="distinct_desc">这个操作符非常的简单、通俗、易懂，就是简单的去重嘛，我甚至都不想贴代码，但人嘛，总得持之以恒。</string>
+
+    <string name="filter_title">filter</string>
+    <string name="filter_desc">信我，Filter你会很常用的，它的作用也很简单，过滤器嘛。可以接受一个参数，让其过滤掉不符合我们条件的值。</string>
+
+    <string name="buffer_title">buffer</string>
+    <string name="buffer_desc">buffer操作符接受两个参数，buffer(count,skip)，作用是将Observable中的数据按skip(步长)分成最大不超过count的buffer，
+        然后生成一个Observable。也许你还不太理解，我们可以通过我们的示例图和示例代码来进一步深化它。</string>
+
+    <string name="timer_title">timer</string>
+    <string name="timer_desc">timer很有意思，相当于一个定时任务。在1.x中它还可以执行间隔逻辑，但在2.x中此功能被交给了interval，下一个会介绍。
+        但需要注意的是，timer和interval均默认在新线程。</string>
+
+    <string name="interval_title">interval</string>
+    <string name="interval_desc">如同我们上面可说，interval操作符用于间隔时间执行某个操作，其接受三个参数，分别是第一次发送延迟，间隔时间，时间单位。</string>
+
+    <string name="doOnNext_title">doOnNext</string>
+    <string name="doOnNext_desc">其实觉得 doOnNext 应该不算一个操作符，但考虑到其常用性，我们还是咬咬牙将它放在了这里。
+        它的作用是让订阅者在接收到数据之前干点有意思的事情。假如我们在获取到数据之前想先保存一下它，无疑我们可以这样实现。</string>
+
+    <string name="skip_title">skip</string>
+    <string name="skip_desc">skip很有意思，其实作用就和字面意思一样，接受一个long型参数count，代表跳过count个数目开始接收。</string>
+
+    <string name="take_title">take</string>
+    <string name="take_desc">take，接受一个long型参数count，代表至多接收count个数据。</string>
+
+    <string name="just_title">just</string>
+    <string name="just_desc">just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。</string>
+
 </resources>
