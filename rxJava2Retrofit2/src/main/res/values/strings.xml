@@ -57,4 +57,44 @@
     <string name="just_title">just</string>
     <string name="just_desc">just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。</string>
 
+    <string name="single_title">Single</string>
+    <string name="single_desc">顾名思义，Single只会接收一个参数，而SingleObserver只会调用onError()或者onSuccess()。</string>
+
+    <string name="debounce_title">debounce</string>
+    <string name="debounce_desc">debounce去除发送频率过快的项，看起来好像没啥用处，但你信我，后面绝对有地方很有用武之地。</string>
+
+    <string name="defer_title">defer</string>
+    <string name="defer_desc">defer简单地时候就是每次订阅都会创建一个新的Observable，并且如果没有被订阅，就不会产生新的Observable。</string>
+
+    <string name="last_title">last</string>
+    <string name="last_desc">last操作符仅取出可观察到的最后一个值，或者是满足某些条件的最后一项。</string>
+
+    <string name="merge_title">merge</string>
+    <string name="merge_desc">merge顾名思义，熟悉版本控制工具的你一定不会不知道merge命令，
+        而在Rx操作符中，merge的作用是把多个Observable结合起来，接受可变参数，也支持迭代器集合。
+        注意它和concat的区别在于，不用等到发射器A发送完所有的事件再进行发射器B的发送。</string>
+
+    <string name="reduce_title">reduce</string>
+    <string name="reduce_desc">reduce操作符每次用一个方法处理一个值，可以有一个seed作为初始值。</string>
+
+    <string name="scan_title">scan</string>
+    <string name="scan_desc">scan操作符作用和上面的reduce一致，唯一区别是reduce是个只追求结果的坏人，而scan会始终如一地把每一个步骤都输出。</string>
+
+    <string name="window_title">window</string>
+    <string name="window_desc">按照实际划分窗口，将数据发送给不同的Observable。</string>
+
+    <string name="PublishSubject">PublishSubject</string>
+    <string name="PublishSubjectDesc">onNext() 会通知每个观察者，仅此而已</string>
+
+    <string name="AsyncSubject">AsyncSubject</string>
+    <string name="AsyncSubjectDesc">在调用onComplete()之前，除了subscribe()其它的操作都会被缓存，在调用onComplete()之后只有最后一个onNext()会生效。</string>
+
+    <string name="BehaviorSubject">BehaviorSubject</string>
+    <string name="BehaviorSubjectDesc">BehaviorSubject的最后一次onNext()操作会被缓存，然后在subscribe()后立刻推给新注册的Observer。</string>
+
+    <string name="completable">Completable</string>
+    <string name="completableDesc">Completable只关心结果，也就是说Completable是没有onNext的，要么成功要么出错，不关心过程，在subscribe后的某个时间点返回结果。</string>
+    <string name="flowable">flowable</string>
+    <string name="flowableDesc">Flowable专用于解决背压问题。</string>
+
 </resources>

@@ -104,8 +104,46 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 mContext!!.getString(R.string.just_title) -> {
                     mRxJavaToKotlin.just(stringBuffer)
                 }
+                mContext!!.getString(R.string.single_title) -> {
+                    mRxJavaToKotlin.single(stringBuffer)
+                }
+                mContext!!.getString(R.string.debounce_title) -> {
+                    mRxJavaToKotlin.debounce(stringBuffer)
+                }
+                mContext!!.getString(R.string.defer_title) -> {
+                    mRxJavaToKotlin.defer(stringBuffer)
+                }
+                mContext!!.getString(R.string.last_title) -> {
+                    mRxJavaToKotlin.last(stringBuffer)
+                }
+                mContext!!.getString(R.string.merge_title) -> {
+                    mRxJavaToKotlin.merge(stringBuffer)
+                }
+                mContext!!.getString(R.string.reduce_title) -> {
+                    mRxJavaToKotlin.reduce(stringBuffer)
+                }
+                mContext!!.getString(R.string.scan_title) -> {
+                    mRxJavaToKotlin.scan(stringBuffer)
+                }
+                mContext!!.getString(R.string.window_title) -> {
+                    mRxJavaToKotlin.window(stringBuffer)
+                }
+                mContext!!.getString(R.string.PublishSubject) -> {
+                    mRxJavaToKotlin.publishSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.AsyncSubject) -> {
+                    mRxJavaToKotlin.asyncSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.BehaviorSubject) -> {
+                    mRxJavaToKotlin.behaviorSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.completable) -> {
+                    mRxJavaToKotlin.completable(stringBuffer)
+                }
+                mContext!!.getString(R.string.flowable) -> {
+                    mRxJavaToKotlin.flowable(stringBuffer)
+                }
             }
-
             viewHolder.itemView.tvContent!!.setText(stringBuffer)
         }
         viewHolder.itemView.tvJava.setOnClickListener {
@@ -154,6 +192,45 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 mContext!!.getString(R.string.just_title) -> {
                     mRxJavaToJava.just(stringBuffer)
+                }
+                mContext!!.getString(R.string.single_title) -> {
+                    mRxJavaToJava.single(stringBuffer)
+                }
+                mContext!!.getString(R.string.debounce_title) -> {
+                    mRxJavaToJava.debounce(stringBuffer)
+                }
+                mContext!!.getString(R.string.defer_title) -> {
+                    mRxJavaToJava.defer(stringBuffer)
+                }
+                mContext!!.getString(R.string.last_title) -> {
+                    mRxJavaToJava.last(stringBuffer)
+                }
+                mContext!!.getString(R.string.merge_title) -> {
+                    mRxJavaToJava.merge(stringBuffer)
+                }
+                mContext!!.getString(R.string.reduce_title) -> {
+                    mRxJavaToJava.reduce(stringBuffer)
+                }
+                mContext!!.getString(R.string.scan_title) -> {
+                    mRxJavaToJava.scan(stringBuffer)
+                }
+                mContext!!.getString(R.string.window_title) -> {
+                    mRxJavaToJava.window(stringBuffer)
+                }
+                mContext!!.getString(R.string.PublishSubject) -> {
+                    mRxJavaToJava.publishSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.AsyncSubject) -> {
+                    mRxJavaToJava.asyncSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.BehaviorSubject) -> {
+                    mRxJavaToJava.behaviorSubject(stringBuffer)
+                }
+                mContext!!.getString(R.string.completable) -> {
+                    mRxJavaToJava.completable(stringBuffer)
+                }
+                mContext!!.getString(R.string.flowable) -> {
+                    mRxJavaToJava.flowable(stringBuffer)
                 }
             }
             viewHolder.itemView.tvContent!!.setText(stringBuffer)

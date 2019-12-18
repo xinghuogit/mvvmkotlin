@@ -1,9 +1,8 @@
 package com.spark.myapplication
 
 import com.library.common.utils.DateUtils
+import io.reactivex.*
 import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -12,8 +11,14 @@ import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.AsyncSubject
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import java.io.Serializable
+import java.util.*
+import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 /*************************************************************************************************
  * 日期：2019/12/13 17:23
@@ -22,6 +27,455 @@ import java.util.concurrent.TimeUnit
  * 描述：
  */
 class RxJavaToKotlin {
+
+    /**
+     * Flowable专用于解决背压问题
+     */
+    fun flowable(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin flowable 查看log")
+        stringBuffer.append("\n")
+        Flowable.just(1, 2, 3, 4)
+            .reduce(100, object : BiFunction<Int, Int, Int> {
+                override fun apply(t1: Int, t2: Int): Int {
+                    return (t1 + t2)
+                }
+            }).subscribe(object : Consumer<Int> {
+                override fun accept(t: Int) {
+                    println("accept()$t")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * Completable只关心结果，也就是说Completable是没有onNext的，要么成功要么出错，不关心过程，在subscribe后的某个时间点返回结果。
+     */
+    fun completable(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin completable")
+        stringBuffer.append("\n")
+        Completable.timer(2, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onComplete() {
+                    stringBuffer.append("onComplete()")
+                    stringBuffer.append("\n")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    stringBuffer.append("onSubscribe()${d.isDisposed}")
+                    stringBuffer.append("\n")
+                }
+
+                override fun onError(e: Throwable) {
+                    stringBuffer.append("onSubscribe()${e.message}")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * BehaviorSubject的最后一次onNext()操作会被缓存，然后在subscribe()后立刻推给新注册的Observer。
+     */
+    fun behaviorSubject(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin behaviorSubject")
+        stringBuffer.append("\n")
+        var behaviorSubject = BehaviorSubject.create<Int>();
+        behaviorSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("First onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("First onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("First onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("First onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        behaviorSubject.onNext(1)
+        behaviorSubject.onNext(4)
+
+        behaviorSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("Second onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("Second onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("Second onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("Second onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        behaviorSubject.onNext(5)
+        behaviorSubject.onNext(7)
+        behaviorSubject.onComplete()
+        return stringBuffer.toString()
+    }
+
+    /**
+     * 在调用onComplete()之前，除了subscribe()其它的操作都会被缓存，
+     * 在调用onComplete()之后只有最后一个onNext()会生效。
+     */
+    fun asyncSubject(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin asyncSubject")
+        stringBuffer.append("\n")
+        var asyncSubject = AsyncSubject.create<Int>();
+        asyncSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("First onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("First onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("First onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("First onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        asyncSubject.onNext(1)
+        asyncSubject.onNext(4)
+
+        asyncSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("Second onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("Second onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("Second onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("Second onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        asyncSubject.onNext(5)
+        asyncSubject.onNext(7)
+        asyncSubject.onComplete()
+        return stringBuffer.toString()
+    }
+
+    /**
+     * onNext() 会通知每个观察者，仅此而已
+     */
+    fun publishSubject(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin publishSubject")
+        stringBuffer.append("\n")
+        var publishSubject = PublishSubject.create<Int>();
+        publishSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("First onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("First onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("First onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("First onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        publishSubject.onNext(1)
+        publishSubject.onNext(4)
+
+        publishSubject.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("Second onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("Second onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("Second onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("Second onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        publishSubject.onNext(5)
+        publishSubject.onNext(7)
+        publishSubject.onComplete()
+        return stringBuffer.toString()
+    }
+
+
+    /**
+     * 按照实际划分窗口，将数据发送给不同的Observable。
+     * 每个数据间隔2秒，最多接收5个数据，每个window间隔3秒
+     */
+    fun window(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin window 查看log")
+        stringBuffer.append("\n")
+        Observable.interval(2, TimeUnit.SECONDS)//间隔2秒
+            .take(5) // 最多5个
+            .window(3, TimeUnit.SECONDS)//每个间隔3秒
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Consumer<Observable<Long>> {
+                override fun accept(t: Observable<Long>?) {
+                    println("window")
+                    t!!.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Consumer<Long> {
+                            override fun accept(t: Long?) {
+                                println("accept()：$t")
+                            }
+                        })
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * scan操作符作用和上面的reduce一致，唯一区别是reduce是个只追求结果的坏人，而scan会始终如一地把每一个步骤都输出。
+     * scan操作符每次用一个方法处理一个值，可以有一个seed作为初始值。
+     * 可以看到，代码中，我们中间采用scan，支持一个 function 为两数值相加，
+     * 所以应该最后的值是：1 = 1，1 + 3 = 4 ，4 + 4 = 8 而Log 日志完美解决了我们的问题。
+     */
+    fun scan(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin scan")
+        stringBuffer.append("\n")
+        Observable.just(1, 3, 4)
+            .scan(object : BiFunction<Int, Int, Int> {
+                override fun apply(t1: Int, t2: Int): Int {
+                    return t1 + t2
+                }
+            })
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * reduce操作符每次用一个方法处理一个值，可以有一个seed作为初始值。
+     * 可以看到，代码中，我们中间采用 reduce ，支持一个 function 为两数值相加，
+     * 所以应该最后的值是：1 + 3 = 4 + 4 = 8 ， 而Log 日志完美解决了我们的问题。
+     */
+    fun reduce(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin reduce")
+        stringBuffer.append("\n")
+        Observable.just(1, 3, 4)
+            .reduce(object : BiFunction<Int, Int, Int> {
+                override fun apply(t1: Int, t2: Int): Int {
+                    return t1 + t2
+                }
+            }).subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * merge顾名思义，熟悉版本控制工具的你一定不会不知道merge命令，
+     * 而在Rx操作符中，merge的作用是把多个Observable结合起来，接受可变参数，也支持迭代器集合。
+     * 注意它和concat的区别在于，不用等到发射器A发送完所有的事件再进行发射器B的发送。
+     */
+    fun merge(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin merge")
+        stringBuffer.append("\n")
+        Observable.merge(Observable.just(1, 3), Observable.just(6, 8))
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * last操作符仅取出可观察到的最后一个值，或者是满足某些条件的最后一项。
+     */
+    fun last(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin last")
+        stringBuffer.append("\n")
+        Observable.just(1, 3, 7)
+            .last(4)
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * 简单地时候就是每次订阅都会创建一个新的Observable，并且如果没有被订阅，就不会产生新的Observable。
+     */
+    fun defer(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin defer")
+        stringBuffer.append("\n")
+        var observable = Observable.defer(object : Callable<ObservableSource<Int>> {
+            override fun call(): ObservableSource<Int> {
+                return Observable.just(1, 3, 4)
+            }
+        })
+        observable.subscribe(object : Observer<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onNext(t: Int) {
+                stringBuffer.append("onNext()$t")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onComplete() {
+                stringBuffer.append("onComplete()")
+                stringBuffer.append("\n")
+            }
+        })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * debounce去除发送频率过快的项，看起来好像没啥用处，但你信我，后面绝对有地方很有用武之地。过滤了350秒的，查看log
+     */
+    fun debounce(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin debounce")
+        stringBuffer.append("\n")
+        stringBuffer.append("除发送间隔时间小于350毫秒的发射事件，所以2/3/4被去掉了，查看log")
+        stringBuffer.append("\n")
+        Observable.create(ObservableOnSubscribe<Int> {
+            it.onNext(1)
+            Thread.sleep(400)
+            it.onNext(2)
+            Thread.sleep(300)
+            it.onNext(3)
+            Thread.sleep(100)
+            it.onNext(4)
+            Thread.sleep(350)
+            it.onNext(5)
+            Thread.sleep(410)
+//            it.onComplete()
+        }).debounce(350, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Consumer<Int> {
+                override fun accept(t: Int?) {
+                    println(t)
+                }
+            })
+        return stringBuffer.toString()
+    }
+
+    /**
+     * 顾名思义，Single只会接收一个参数，而SingleObserver只会调用onError()或者onSuccess()。
+     */
+    fun single(stringBuffer: StringBuffer): String {
+        stringBuffer.append("\n")
+        stringBuffer.append("\n")
+        stringBuffer.append("RxJavaToKotlin single")
+        stringBuffer.append("\n")
+        Single.just(Random().nextInt()).subscribe(object : SingleObserver<Int> {
+            override fun onSubscribe(d: Disposable) {
+                stringBuffer.append("onSubscribe()${d.isDisposed}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onSuccess(t: Int) {
+                stringBuffer.append("onSuccess()${t}")
+                stringBuffer.append("\n")
+            }
+
+            override fun onError(e: Throwable) {
+                stringBuffer.append("onError()${e.message}")
+                stringBuffer.append("\n")
+            }
+        })
+        return stringBuffer.toString()
+    }
+
     /**
      * just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。
      */

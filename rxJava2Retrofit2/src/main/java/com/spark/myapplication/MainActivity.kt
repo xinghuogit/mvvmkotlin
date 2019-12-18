@@ -37,7 +37,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         lists.add(RxJavaData(getString(R.string.zip_title), getString(R.string.zip_desc)))
         lists.add(RxJavaData(getString(R.string.concat_title), getString(R.string.concat_desc)))
         lists.add(RxJavaData(getString(R.string.flatmap_title), getString(R.string.flatmap_desc)))
-        lists.add(RxJavaData(getString(R.string.concatmap_title), getString(R.string.concatmap_desc)))
+        lists.add(
+            RxJavaData(
+                getString(R.string.concatmap_title),
+                getString(R.string.concatmap_desc)
+            )
+        )
         lists.add(RxJavaData(getString(R.string.distinct_title), getString(R.string.distinct_desc)))
         lists.add(RxJavaData(getString(R.string.filter_title), getString(R.string.filter_desc)))
         lists.add(RxJavaData(getString(R.string.buffer_title), getString(R.string.buffer_desc)))
@@ -47,6 +52,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         lists.add(RxJavaData(getString(R.string.skip_title), getString(R.string.skip_desc)))
         lists.add(RxJavaData(getString(R.string.take_title), getString(R.string.take_desc)))
         lists.add(RxJavaData(getString(R.string.just_title), getString(R.string.just_desc)))
+        lists.add(RxJavaData(getString(R.string.single_title), getString(R.string.single_desc)))
+        lists.add(RxJavaData(getString(R.string.debounce_title), getString(R.string.debounce_desc)))
+        lists.add(RxJavaData(getString(R.string.defer_title), getString(R.string.defer_desc)))
+        lists.add(RxJavaData(getString(R.string.last_title), getString(R.string.last_desc)))
+        lists.add(RxJavaData(getString(R.string.merge_title), getString(R.string.merge_desc)))
+        lists.add(RxJavaData(getString(R.string.reduce_title), getString(R.string.reduce_desc)))
+        lists.add(RxJavaData(getString(R.string.scan_title), getString(R.string.scan_desc)))
+        lists.add(RxJavaData(getString(R.string.window_title), getString(R.string.window_desc)))
+        lists.add(RxJavaData(getString(R.string.PublishSubject), getString(R.string.PublishSubjectDesc)))
+        lists.add(RxJavaData(getString(R.string.AsyncSubject), getString(R.string.AsyncSubjectDesc)))
+        lists.add(RxJavaData(getString(R.string.BehaviorSubject), getString(R.string.BehaviorSubjectDesc)))
+        lists.add(RxJavaData(getString(R.string.completable), getString(R.string.completableDesc)))
+        lists.add(RxJavaData(getString(R.string.flowable), getString(R.string.flowableDesc)))
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL

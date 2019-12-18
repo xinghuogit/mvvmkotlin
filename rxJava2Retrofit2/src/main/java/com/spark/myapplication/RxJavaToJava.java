@@ -5,13 +5,20 @@ import com.library.common.utils.DateUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
@@ -19,6 +26,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.AsyncSubject;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
+
+import static java.sql.DriverManager.println;
 
 /*************************************************************************************************
  * 日期：2019/12/13 17:23
@@ -27,6 +39,511 @@ import io.reactivex.schedulers.Schedulers;
  * 描述：
  ************************************************************************************************/
 public class RxJavaToJava {
+
+    /**
+     * Flowable专用于解决背压问题
+     */
+    public String flowable(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava flowable 查看log");
+        stringBuffer.append("\n");
+        Flowable.just(1, 2, 3, 4)
+                .reduce(100, new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+                        return integer + integer2;
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        System.out.println("accept()" + integer);
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * Completable只关心结果，也就是说Completable是没有onNext的，要么成功要么出错，不关心过程，在subscribe后的某个时间点返回结果。
+     */
+    public String completable(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToKotlin completable");
+        stringBuffer.append("\n");
+        Completable.timer(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        stringBuffer.append("onSubscribe()" + d.isDisposed());
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        stringBuffer.append("onComplete()");
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        stringBuffer.append("onError()" + e.getMessage());
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * BehaviorSubject的最后一次onNext()操作会被缓存，然后在subscribe()后立刻推给新注册的Observer。
+     */
+    public String behaviorSubject(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava behaviorSubject");
+        stringBuffer.append("\n");
+        BehaviorSubject<Integer> behaviorSubject = BehaviorSubject.create();
+        behaviorSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("First onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("First onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("First onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("First onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        behaviorSubject.onNext(1);
+        behaviorSubject.onNext(4);
+
+        behaviorSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("Second onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("Second onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("Second onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("Second onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        behaviorSubject.onNext(5);
+        behaviorSubject.onNext(7);
+        behaviorSubject.onComplete();
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 在调用onComplete()之前，除了subscribe()其它的操作都会被缓存，
+     * 在调用onComplete()之后只有最后一个onNext()会生效。
+     */
+    public String asyncSubject(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava asyncSubject");
+        stringBuffer.append("\n");
+        AsyncSubject<Integer> asyncSubject = AsyncSubject.create();
+        asyncSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("First onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("First onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("First onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("First onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        asyncSubject.onNext(1);
+        asyncSubject.onNext(4);
+
+        asyncSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("Second onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("Second onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("Second onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("Second onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        asyncSubject.onNext(5);
+        asyncSubject.onNext(7);
+        asyncSubject.onComplete();
+        return stringBuffer.toString();
+    }
+
+    /**
+     * onNext() 会通知每个观察者，仅此而已
+     */
+    public String publishSubject(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava publishSubject");
+        stringBuffer.append("\n");
+        PublishSubject<Integer> publishSubject = PublishSubject.create();
+        publishSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("First onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("First onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("First onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("First onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        publishSubject.onNext(1);
+        publishSubject.onNext(4);
+
+        publishSubject.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                stringBuffer.append("Second onSubscribe()" + d.isDisposed());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                stringBuffer.append("Second onNext()" + integer);
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                stringBuffer.append("Second onError()" + e.getMessage());
+                stringBuffer.append("\n");
+            }
+
+            @Override
+            public void onComplete() {
+                stringBuffer.append("Second onComplete()");
+                stringBuffer.append("\n");
+            }
+        });
+        publishSubject.onNext(5);
+        publishSubject.onNext(7);
+        publishSubject.onComplete();
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 按照实际划分窗口，将数据发送给不同的Observable。
+     * 每个数据间隔2秒，最多接收5个数据，每个window间隔3秒
+     */
+    public String window(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToKotlin window 查看log");
+        stringBuffer.append("\n");
+        Observable.interval(2, TimeUnit.SECONDS)//间隔2秒
+                .take(5)// 最多5个
+                .window(3, TimeUnit.SECONDS)//每个间隔3秒
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Observable<Long>>() {
+                    @Override
+                    public void accept(Observable<Long> longObservable) throws Exception {
+                        System.out.println("window");
+                        longObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<Long>() {
+                                    @Override
+                                    public void accept(Long aLong) throws Exception {
+                                        System.out.println("accept()：" + aLong);
+                                    }
+                                });
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * scan操作符作用和上面的reduce一致，唯一区别是reduce是个只追求结果的坏人，而scan会始终如一地把每一个步骤都输出。
+     * scan操作符每次用一个方法处理一个值，可以有一个seed作为初始值。
+     * 可以看到，代码中，我们中间采用scan，支持一个 function 为两数值相加，
+     * 所以应该最后的值是：1 = 1，1 + 3 = 4 ，4 + 4 = 8 而Log 日志完美解决了我们的问题。
+     */
+    public String scan(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava scan");
+        stringBuffer.append("\n");
+        Observable.just(1, 3, 5)
+                .scan(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+                        return integer + integer2;
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * reduce操作符每次用一个方法处理一个值，可以有一个seed作为初始值。
+     * 可以看到，代码中，我们中间采用 reduce ，支持一个 function 为两数值相加，
+     * 所以应该最后的值是：1 + 3 = 4 + 5 = 9 ， 而Log 日志完美解决了我们的问题。
+     */
+    public String reduce(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava reduce");
+        stringBuffer.append("\n");
+        Observable.just(1, 3, 5)
+                .reduce(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+                        return integer + integer2;
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * merge顾名思义，熟悉版本控制工具的你一定不会不知道merge命令，
+     * 而在Rx操作符中，merge的作用是把多个Observable结合起来，接受可变参数，也支持迭代器集合。
+     * 注意它和concat的区别在于，不用等到发射器A发送完所有的事件再进行发射器B的发送。
+     */
+    public String merge(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava merge");
+        stringBuffer.append("\n");
+        Observable.merge(Observable.just(1, 4), Observable.just(7, 9))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * last操作符仅取出可观察到的最后一个值，或者是满足某些条件的最后一项。
+     */
+    public String last(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava last");
+        stringBuffer.append("\n");
+        Observable.just(1, 5, 8)
+                .last(7)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        stringBuffer.append("accept()" + integer);
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 简单地时候就是每次订阅都会创建一个新的Observable，并且如果没有被订阅，就不会产生新的Observable。
+     */
+    public String defer(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava defer");
+        stringBuffer.append("\n");
+
+        Observable<Integer> observable = Observable.defer(new Callable<ObservableSource<Integer>>() {
+            @Override
+            public ObservableSource<Integer> call() throws Exception {
+                return null;
+            }
+        });
+        observable
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        stringBuffer.append("onSubscribe()" + d.isDisposed());
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        stringBuffer.append("onNext()" + integer);
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        stringBuffer.append("onError()" + e.getMessage());
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        stringBuffer.append("onComplete()");
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+
+    /**
+     * debounce去除发送频率过快的项，看起来好像没啥用处，但你信我，后面绝对有地方很有用武之地。过滤了350秒的，查看log
+     */
+    public String debounce(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava debounce");
+        stringBuffer.append("\n");
+        stringBuffer.append("除发送间隔时间小于400毫秒的发射事件，所以 2 和 3 被去掉了，查看log");
+        stringBuffer.append("\n");
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                emitter.onNext(1);
+                Thread.sleep(380);
+                emitter.onNext(2);
+                Thread.sleep(300);
+                emitter.onNext(3);
+                Thread.sleep(100);
+                emitter.onNext(4);
+                Thread.sleep(380);
+                emitter.onNext(5);
+                Thread.sleep(100);
+//                emitter.onComplete();
+            }
+        }).debounce(400, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        System.out.println("accept()" + integer);
+                    }
+                });
+        return stringBuffer.toString();
+    }
+
+
+    /**
+     * 顾名思义，Single只会接收一个参数，而SingleObserver只会调用onError()或者onSuccess()。
+     */
+    public String single(StringBuffer stringBuffer) {
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToJava single");
+        stringBuffer.append("\n");
+        Single.just(new Random().nextInt())
+                .subscribe(new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        stringBuffer.append("onSubscribe()" + d.isDisposed());
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        stringBuffer.append("onSuccess()" + integer);
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        stringBuffer.append("onError()" + e.getMessage());
+                        stringBuffer.append("\n");
+                    }
+                });
+        return stringBuffer.toString();
+    }
 
     /**
      * just，没什么好说的，其实在前面各种例子都说明了，就是一个简单的发射器依次调用onNext()方法。
