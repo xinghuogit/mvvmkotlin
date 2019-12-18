@@ -828,7 +828,7 @@ class RxJavaToKotlin {
                 stringBuffer.append("\n")
                 it.onComplete()
             }
-        })
+        }).subscribeOn(Schedulers.io())
 
         var observableInt = Observable.create(ObservableOnSubscribe<Int> {
             if (!it.isDisposed) {
@@ -841,11 +841,17 @@ class RxJavaToKotlin {
                 stringBuffer.append("emitter 3")
                 stringBuffer.append("\n")
                 it.onNext(3)
-                stringBuffer.append("emitter onComplete()")
-                stringBuffer.append("\n")
-                it.onComplete()
+//                stringBuffer.append("emitter onComplete()")
+//                stringBuffer.append("\n")
+                var i = 0
+                while (true) {   //无限循环发事件
+                    it.onNext(i)
+                    i++
+                    println(i)
+                }
+//                it.onComplete()
             }
-        })
+        }).subscribeOn(Schedulers.io())
 
 
         Observable.zip(observableStr, observableInt, object : BiFunction<String, Int, String> {
@@ -854,12 +860,13 @@ class RxJavaToKotlin {
                 stringBuffer.append("\n")
                 return t1 + t2
             }
-        }).subscribe(object : Consumer<String> {
-            override fun accept(t: String?) {
-                stringBuffer.append("accept()$t")
-                stringBuffer.append("\n")
-            }
-        })
+        }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Consumer<String> {
+                override fun accept(t: String?) {
+                    stringBuffer.append("accept()$t")
+                    stringBuffer.append("\n")
+                }
+            })
 
         return stringBuffer.toString()
     }

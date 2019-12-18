@@ -926,7 +926,7 @@ public class RxJavaToJava {
                     emitter.onComplete();
                 }
             }
-        });
+        }).subscribeOn(Schedulers.io());
 
         Observable observableInt = Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
@@ -943,23 +943,27 @@ public class RxJavaToJava {
                     emitter.onNext(3);
                     stringBuffer.append("emitter onComplete()");
                     stringBuffer.append("\n");
-                    emitter.onComplete();
+//                    emitter.onComplete();
+                    for (int i = 0; ; i++) {   //无限循环发事件
+                        emitter.onNext(i);
+                    }
                 }
             }
-        });
+        }).subscribeOn(Schedulers.io());
 
         Observable.zip(observableStr, observableInt, new BiFunction<String, Integer, String>() {
             @Override
             public String apply(String s, Integer integer) throws Exception {
                 return s + integer;
             }
-        }).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                stringBuffer.append("accept()" + s);
-                stringBuffer.append("\n");
-            }
-        });
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        stringBuffer.append("accept()" + s);
+                        stringBuffer.append("\n");
+                    }
+                });
         return stringBuffer.toString();
     }
 
