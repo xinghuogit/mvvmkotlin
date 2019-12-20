@@ -1,6 +1,9 @@
-package com.spark.myapplication;
+package com.spark.myapplication.java;
 
 import com.library.common.utils.DateUtils;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,9 +12,13 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -48,19 +55,53 @@ public class RxJavaToJava {
         stringBuffer.append("\n");
         stringBuffer.append("RxJavaToJava flowable 查看log");
         stringBuffer.append("\n");
-        Flowable.just(1, 2, 3, 4)
-                .reduce(100, new BiFunction<Integer, Integer, Integer>() {
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> emitter) throws Exception {
+                emitter.onNext(1);
+                emitter.onNext(3);
+                emitter.onNext(4);
+            }
+        }, BackpressureStrategy.ERROR)
+                .subscribe(new Subscriber<Integer>() {
                     @Override
-                    public Integer apply(Integer integer, Integer integer2) throws Exception {
-                        return integer + integer2;
+                    public void onSubscribe(Subscription s) {
+                        stringBuffer.append("onSubscribe()" + (s != null));
+                        stringBuffer.append("\n");
                     }
-                })
-                .subscribe(new Consumer<Integer>() {
+
                     @Override
-                    public void accept(Integer integer) throws Exception {
-                        System.out.println("accept()" + integer);
+                    public void onNext(Integer integer) {
+                        stringBuffer.append("onNext()" + integer);
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        System.out.println(t);
+                        stringBuffer.append("onError()" + t.getMessage());
+                        stringBuffer.append("\n");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        stringBuffer.append("onComplete()");
+                        stringBuffer.append("\n");
                     }
                 });
+//        Flowable.just(1, 2, 3, 4)
+//                .reduce(100, new BiFunction<Integer, Integer, Integer>() {
+//                    @Override
+//                    public Integer apply(Integer integer, Integer integer2) throws Exception {
+//                        return integer + integer2;
+//                    }
+//                })
+//                .subscribe(new Consumer<Integer>() {
+//                    @Override
+//                    public void accept(Integer integer) throws Exception {
+//                        System.out.println("accept()" + integer);
+//                    }
+//                });
         return stringBuffer.toString();
     }
 
@@ -836,6 +877,9 @@ public class RxJavaToJava {
                 stringBuffer.append("emitter 3");
                 stringBuffer.append("\n");
                 emitter.onNext(3);
+                for (int j = 4; ; j++) {
+                    emitter.onNext(j);
+                }
             }
         }).flatMap(new Function<Integer, ObservableSource<String>>() {
             @Override
@@ -856,6 +900,7 @@ public class RxJavaToJava {
                     public void accept(String s) throws Exception {
                         stringBuffer.append("accept()" + s);
                         stringBuffer.append("\n");
+                        System.out.println("accept():" + s);
                     }
                 });
         return stringBuffer.toString();

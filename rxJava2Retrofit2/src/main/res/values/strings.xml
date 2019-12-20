@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RxJava2</string>
+    <string name="app_name">RxJava2Retrofit2</string>
 
     <string name="create_title">create</string>
     <string name="create_desc">create操作符应该是最常见的操作符了，主要用于产生一个Obserable被观察者对象，为了方便大家的认知，
@@ -94,7 +94,10 @@
 
     <string name="completable">Completable</string>
     <string name="completableDesc">Completable只关心结果，也就是说Completable是没有onNext的，要么成功要么出错，不关心过程，在subscribe后的某个时间点返回结果。</string>
-    <string name="flowable">flowable</string>
+
+    <string name="flowable">简单的网络请求</string>
     <string name="flowableDesc">Flowable专用于解决背压问题。</string>
+
+
 
 </resources>

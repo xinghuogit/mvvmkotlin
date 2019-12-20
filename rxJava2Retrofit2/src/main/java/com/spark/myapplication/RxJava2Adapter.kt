@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.spark.myapplication.java.RxJavaToJava
+import com.spark.myapplication.kotlin.RxJavaToKotlin
+import com.spark.myapplication.model.RxJavaData
 import kotlinx.android.synthetic.main.item_rxjava.view.*
 
 /*************************************************************************************************
@@ -17,8 +20,10 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
     var mData = ArrayList<RxJavaData>();
     var mContext: Context? = null;
 
-    private var mRxJavaToKotlin: RxJavaToKotlin = RxJavaToKotlin()
-    private var mRxJavaToJava: RxJavaToJava = RxJavaToJava()
+    private var mRxJavaToKotlin: RxJavaToKotlin =
+        RxJavaToKotlin()
+    private var mRxJavaToJava: RxJavaToJava =
+        RxJavaToJava()
 
     constructor(mContext: Context?) : super() {
         this.mContext = mContext
@@ -141,7 +146,8 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mRxJavaToKotlin.completable(stringBuffer)
                 }
                 mContext!!.getString(R.string.flowable) -> {
-                    mRxJavaToKotlin.flowable(stringBuffer)
+//                    mRxJavaToKotlin.flowable(stringBuffer)
+                    mRxJavaToKotlin.request()
                 }
             }
             viewHolder.itemView.tvContent!!.setText(stringBuffer)
@@ -230,7 +236,7 @@ class RxJava2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mRxJavaToJava.completable(stringBuffer)
                 }
                 mContext!!.getString(R.string.flowable) -> {
-                    mRxJavaToJava.flowable(stringBuffer)
+                    mRxJavaToKotlin.flowable(stringBuffer)
                 }
             }
             viewHolder.itemView.tvContent!!.setText(stringBuffer)

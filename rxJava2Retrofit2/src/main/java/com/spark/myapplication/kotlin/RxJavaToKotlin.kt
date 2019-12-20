@@ -1,4 +1,4 @@
-package com.spark.myapplication
+package com.spark.myapplication.kotlin
 
 import com.library.common.utils.DateUtils
 import io.reactivex.*
@@ -14,11 +14,16 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.AsyncSubject
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
+import java.io.BufferedReader
+import java.io.FileReader
 import java.io.Serializable
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+
 
 /*************************************************************************************************
  * 日期：2019/12/13 17:23
@@ -27,6 +32,70 @@ import kotlin.collections.ArrayList
  * 描述：
  */
 class RxJavaToKotlin {
+    fun flowable() {
+        Flowable.create(object : FlowableOnSubscribe<String> {
+            override fun subscribe(emitter: FlowableEmitter<String>) {
+                try {
+                    var fileReader = FileReader("E:\\work\\沁园春·长沙.txt");
+                    var br = BufferedReader(fileReader)
+//                    var str = ""
+                    br.use {
+                        while (!emitter.isCancelled) {
+                            var str = br.readText().toString()
+                            while (emitter.requested() == 0L) {
+                                if (emitter.isCancelled) break
+                            }
+                            emitter.onNext(str)
+                        }
+                    }
+                    br.close()
+                    fileReader.close()
+                    emitter.onComplete()
+                } catch (e: Exception) {
+                    emitter.onError(e)
+                    e.printStackTrace()
+                }
+            }
+        }, BackpressureStrategy.ERROR)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.newThread())
+            .subscribe(object : Subscriber<String> {
+                override fun onComplete() {
+                    println("onComplete()");
+                }
+
+                override fun onSubscribe(s: Subscription) {
+                    mSubscription = s;
+                    s.request(1)
+                }
+
+                override fun onNext(t: String) {
+                    println("$t");
+                    Thread.sleep(2000)
+                    if (mSubscription != null) mSubscription!!.request(1)
+                }
+
+                override fun onError(t: Throwable?) {
+                    println(t);
+                }
+            })
+//        Flowable.just(1, 2, 3, 4)
+//            .reduce(100, object : BiFunction<Int, Int, Int> {
+//                override fun apply(t1: Int, t2: Int): Int {
+//                    return (t1 + t2)
+//                }
+//            }).subscribe(object : Consumer<Int> {
+//                override fun accept(t: Int) {
+//                    println("accept()$t")
+//                }
+//            })
+    }
+
+    var mSubscription: Subscription? = null
+
+    fun request() {
+        mSubscription!!.request(96)
+    }
 
     /**
      * Flowable专用于解决背压问题
@@ -36,16 +105,75 @@ class RxJavaToKotlin {
         stringBuffer.append("\n")
         stringBuffer.append("RxJavaToKotlin flowable 查看log")
         stringBuffer.append("\n")
-        Flowable.just(1, 2, 3, 4)
-            .reduce(100, object : BiFunction<Int, Int, Int> {
-                override fun apply(t1: Int, t2: Int): Int {
-                    return (t1 + t2)
+        Flowable.create(object : FlowableOnSubscribe<Int> {
+            override fun subscribe(emitter: FlowableEmitter<Int>) {
+//                emitter.onNext(1)
+//                emitter.onNext(2)
+//                emitter.onNext(23)
+//                var i = 0
+//                while (i < Long.MAX_VALUE) {
+//                    println("emitter$i")
+//                    emitter.onNext(i)
+//                    i++
+//                }
+                var flag = false
+                var i = 0
+                while (i < Long.MAX_VALUE) {
+                    flag = false
+                    while (emitter.requested() == 0L) {
+                        if (!flag) {
+                            flag = true
+                            println("没有数据了")
+                        }
+                    }
+                    println("emitter:${i}       emitter.requested():${emitter.requested()}")
+                    emitter.onNext(i)
+                    i++
                 }
-            }).subscribe(object : Consumer<Int> {
-                override fun accept(t: Int) {
-                    println("accept()$t")
+
+//                println(emitter.requested())
+//                println("Long.MAX_VALUE${Long.MAX_VALUE}")
+            }
+        }, BackpressureStrategy.ERROR)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<Int> {
+                override fun onComplete() {
+                    stringBuffer.append("onComplete()")
+                    stringBuffer.append("\n")
+                }
+
+                override fun onSubscribe(s: Subscription) {
+                    mSubscription = s;
+                    stringBuffer.append("onSubscribe()${s != null}")
+                    stringBuffer.append("\n")
+//                    s.request(1)
+//                    s.request(2)
+//                    s!!.request(Long.MAX_VALUE)
+                }
+
+                override fun onNext(t: Int?) {
+                    println("onNext$t");
+                    stringBuffer.append("onNext()$t")
+                    stringBuffer.append("\n")
+                }
+
+                override fun onError(t: Throwable?) {
+                    println(t);
+                    stringBuffer.append("onError()${t!!.message}")
+                    stringBuffer.append("\n")
                 }
             })
+//        Flowable.just(1, 2, 3, 4)
+//            .reduce(100, object : BiFunction<Int, Int, Int> {
+//                override fun apply(t1: Int, t2: Int): Int {
+//                    return (t1 + t2)
+//                }
+//            }).subscribe(object : Consumer<Int> {
+//                override fun accept(t: Int) {
+//                    println("accept()$t")
+//                }
+//            })
         return stringBuffer.toString()
     }
 
@@ -748,8 +876,15 @@ class RxJavaToKotlin {
             stringBuffer.append("emitter 3")
             stringBuffer.append("\n")
             it.onNext(3)
-            stringBuffer.append("emitter onComplete()")
-            stringBuffer.append("\n")
+//            stringBuffer.append("emitter onComplete()")
+//            stringBuffer.append("\n")
+
+            var i = 4
+            while (true) {   //无限循环发事件
+                it.onNext(i)
+                i++
+                println(i)
+            }
         }).flatMap(object : Function<Int, ObservableSource<String>> {
             override fun apply(t: Int): ObservableSource<String> {
                 var list = ArrayList<String>();
@@ -767,6 +902,7 @@ class RxJavaToKotlin {
                 override fun accept(t: String?) {
                     stringBuffer.append("accept()$t")
                     stringBuffer.append("\n")
+                    println("accept():$t");
                 }
             })
         return stringBuffer.toString()
