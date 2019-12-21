@@ -37,7 +37,19 @@ class Retrofit2Activity : AppCompatActivity() {
                 getString(R.string.simpleDesc)
             )
         )
-        retrofit2Adapter.upDate(lists)
+        lists.add(
+            RxJavaData(
+                getString(R.string.cacheNetWork),
+                getString(R.string.cacheNetWorkDesc)
+            )
+        )
+        lists.add(
+            RxJavaData(
+                getString(R.string.moreNetWorkFlatMap),
+                getString(R.string.moreNetWorkFlatMapDesc)
+            )
+        )
+        retrofit2Adapter.upDate(lists.reversed())
     }
 
     inner class Retrofit2Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -85,6 +97,12 @@ class Retrofit2Activity : AppCompatActivity() {
                 when (item.title) {
                     mContext!!.getString(R.string.simple) -> {
                         RetrofitToKotlin().simple(stringBuffer, viewHolder.itemView.tvContent)
+                    }
+                    mContext!!.getString(R.string.cacheNetWork) -> {
+                        RetrofitToKotlin().cacheNetWork(stringBuffer, viewHolder.itemView.tvContent)
+                    }
+                    mContext!!.getString(R.string.moreNetWorkFlatMap) -> {
+                        RetrofitToKotlin().moreNetWorkFlatMap(stringBuffer, viewHolder.itemView.tvContent)
                     }
                 }
                 viewHolder.itemView.tvContent!!.setText(stringBuffer)

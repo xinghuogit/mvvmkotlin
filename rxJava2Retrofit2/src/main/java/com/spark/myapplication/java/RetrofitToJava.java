@@ -1,6 +1,12 @@
 package com.spark.myapplication.java;
 
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.library.common.utils.DateUtils;
+import com.spark.myapplication.model.WeChatSubscription;
+import com.spark.myapplication.model.data;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -35,6 +41,13 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.AsyncSubject;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import static java.sql.DriverManager.println;
 
 /*************************************************************************************************
  * 日期：2019/12/13 17:23
@@ -43,6 +56,77 @@ import io.reactivex.subjects.PublishSubject;
  * 描述：
  ************************************************************************************************/
 public class RetrofitToJava {
+    public void moreNetWorkFlatMap(StringBuffer stringBuffer, TextView tv) {
+        String url = "https://www.wanandroid.com/banner/json";
+//        val url = "http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512"
+        stringBuffer.append("\n");
+        stringBuffer.append("\n");
+        stringBuffer.append("RxJavaToKotlin moreNetWorkFlatMap");
+        stringBuffer.append("\n");
+
+        Observable network =
+                Observable.create(new ObservableOnSubscribe<ArrayList<WeChatSubscription>>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<ArrayList<WeChatSubscription>> emitter) throws Exception {
+                        System.out.println("network 线程：${Thread.currentThread().name}");
+                        stringBuffer.append("network 线程：${Thread.currentThread().name}");
+                        Request.Builder builder = new Request.Builder().url(url);
+                        Request request = builder.build();
+                        Call call = new OkHttpClient().newCall(request);
+                        Response response = call.execute();
+                        if (response.isSuccessful()) {
+                            ResponseBody body = response.body();
+                            if (body != null) {
+                                String string = body.string();
+                                System.out.println("network 转前：${string}");
+                                stringBuffer.append("network 转前：${string}");
+                                data data1 = new Gson().fromJson(string,
+                                        new TypeToken<data<ArrayList<WeChatSubscription>>>() {
+                                        }.getType());
+                                if (data1 == null) {
+                                    ArrayList<WeChatSubscription> weChatSubscriptions = (ArrayList<WeChatSubscription>) data1.getData();
+                                    emitter.onNext(weChatSubscriptions);
+                                }
+                            }
+                        }
+                    }
+                });
+
+        Observable.create(new ObservableOnSubscribe<ArrayList<WeChatSubscription>>() {
+            @Override
+            public void subscribe(ObservableEmitter<ArrayList<WeChatSubscription>> emitter) throws Exception {
+                System.out.println("network 线程：${Thread.currentThread().name}");
+                stringBuffer.append("network 线程：${Thread.currentThread().name}");
+                Request.Builder builder = new Request.Builder().url(url);
+                Request request = builder.build();
+                Call call = new OkHttpClient().newCall(request);
+                Response response = call.execute();
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String string = body.string();
+                        System.out.println("network 转前：${string}");
+                        stringBuffer.append("network 转前：${string}");
+                        data data1 = new Gson().fromJson(string,
+                                new TypeToken<data<ArrayList<WeChatSubscription>>>() {
+                                }.getType());
+                        if (data1 == null) {
+                            ArrayList<WeChatSubscription> weChatSubscriptions = (ArrayList<WeChatSubscription>) data1.getData();
+                            emitter.onNext(weChatSubscriptions);
+                        }
+                    }
+                }
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ArrayList<WeChatSubscription>>() {
+                    @Override
+                    public void accept(ArrayList<WeChatSubscription> observable) throws Exception {
+
+                    }
+                });
+    }
 
     /**
      * 1）通过Observable.create()方法，调用OkHttp网络请求；
@@ -50,6 +134,12 @@ public class RetrofitToJava {
      * 3）通过doOnNext()方法，解析bean中的数据，并进行数据库存储等操作；
      * 4）调度线程，在子线程中进行耗时操作任务，在主线程中更新UI；
      * 5）通过subscribe()，根据请求成功或者失败来更新UI。
+     */
+    /**
+     * 1)想必这种情况也在实际情况中比比皆是，例如用户注册成功后需要自动登录，
+     * 我们只需要先通过注册接口注册用户信息，注册成功后马上调用登录接口进行自动登录即可。
+     * 2)我们的flatMap恰好解决了这种应用场景，flatMap操作符可以将一个发射数据的Observable变换为多个Observables，
+     * 然后将它们发射的数据合并后放到一个单独的Observable，利用这个特性，我们很轻松地达到了我们的需求。
      */
     public String flowable(StringBuffer stringBuffer) {
         stringBuffer.append("\n");
