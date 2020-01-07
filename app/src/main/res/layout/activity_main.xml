@@ -12,8 +12,12 @@
             type="Weather" />
 
         <variable
-            name="activitymain"
+            name="mainViewModel"
             type="com.spark.mvvmkotlin.viewmodel.MainViewModel" />
+
+        <variable
+            name="activityMain"
+            type="com.spark.mvvmkotlin.view.MainActivity" />
     </data>
 
     <LinearLayout
@@ -26,12 +30,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{activitymain.info,default= @string/today_refresh}" />
+            android:text="@{mainViewModel.info,default= @string/today_refresh}" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->activitymain.addNumber()}"
+            android:onClick="@{()->mainViewModel.addNumber()}"
+            android:text="点击" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->activityMain.v()}"
             android:text="点击" />
         
         <androidx.recyclerview.widget.RecyclerView

@@ -27,10 +27,9 @@ class RetrofitToKotlin {
 
 
     /**
-     * 1）在实际应用中（对数据不敏感）都需要我们先读取缓存的数据，如缓存无数据，再通过网络请求获取，随后在主线程更新我们的UI。
-     * 2）concat操作符简直就是为我们这种需求量身定做。
-     * 3）concat可以做到不交错的发射两个甚至多个Observable的发射事件，并且只有前一个Observable终止(onComplete())后才会定义下一个Observable。
-     * 4）利用这个特性，我们就可以先读取缓存数据，倘若获取到的缓存数据不是我们想要的，再调用onComplete()以执行获取网络数据的Observable，如果缓存数据能应我们所需，则直接调用onNext()，防止过度的网络请求，浪费用户的流量。
+     *1)想必这种情况也在实际情况中比比皆是，例如用户注册成功后需要自动登录，我们只需要先通过注册接口注册用户信息，注册成功后马上调用登录接口进行自动登录即可。
+     *2)我们的flatMap恰好解决了这种应用场景，flatMap操作符可以将一个发射数据的Observable变换为多个Observables，
+     * 然后将它们发射的数据合并后放到一个单独的Observable，利用这个特性，我们很轻松地达到了我们的需求。
      */
     fun moreNetWorkFlatMap(stringBuffer: StringBuffer, tv: TextView) {
         val url = "https://wanandroid.com/wxarticle/chapters/json  "

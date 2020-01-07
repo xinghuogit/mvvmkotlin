@@ -30,6 +30,7 @@ dependencies {
     api rootProject.ext.deps.rxappcompat
     api rootProject.ext.deps.rxrecyclerview
     api rootProject.ext.deps.rxcardview
+    api rootProject.ext.deps.rxconstraintlayout
 
     api rootProject.ext.deps.rxjava
     api rootProject.ext.deps.rxandroid
@@ -41,6 +42,7 @@ dependencies {
     api rootProject.ext.deps.okhttp3
     api rootProject.ext.deps.gson
 
+    api rootProject.ext.deps.glide
 
 //    implementation 'androidx.core:core-ktx:1.1.0'
     testImplementation 'junit:junit:4.12'

@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.library.common" />
+    package="com.library.common">
+
+    <uses-permission android:name="android.permission.INTERNET" />  <!-- 允许程序访问有关网络权限 -->
+
+</manifest>

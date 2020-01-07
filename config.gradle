@@ -11,61 +11,26 @@ ext {
     ]
 
     dependVersion = [
-            rxappcompatVersion          : '1.1.0',
-            rxVersion                   : '1.0.0',
+            rxappcompatVersion        : '1.1.0',
+            rxVersion                 : '1.0.0',
 
             //**********rx-java2&rx-android2  start**********,//
 //            rxjava1Version              : "1.3.0",
-            rxJavaVersion               : "2.2.7",
-            rxAndroidVersion            : "2.1.1",
-            rxLifecycleComponentsVersion: "3.0.0",
+            rxJavaVersion             : "2.2.7",
+            rxAndroidVersion          : "2.1.1",
             //**********rx-java2&rx-android2  end**********,//
 
-            constraintLayoutVersion     : '1.1.3',
-
             //**********retrofit2  start**********//
-            retrofitVersion             : "2.7.0",
-            persistentCookieJarVersion  : "v1.0.0",
+            retrofitVersion           : "2.7.0",
+            persistentCookieJarVersion: "v1.0.0",
             //**********retrofit2  end**********//
 
-            okHttp3Version              : "4.2.2",
-            chuckLibraryVersion         : "1.1.0",
-            gsonVersion                 : "2.8.6",
-
-            eventbusVersion             : "3.1.1",
-
-            greendaoVersion             : "3.2.2",
-
-            junitVersion                : '4.12',
-            truthVersion                : '0.28',
-            robolectricVersion          : '3.3',
-            mockitoVersion              : '2.8.9',
-            jsonVersion                 : '20160810',
-            supportAnnotationsVersion   : '27.1.0',
-
-            serialportVersion           : '1.0.1',// 串口
-
-            bannerVersion               : "1.4.10", // banner轮播
-            glideVersion                : "4.5.0", // glide加载图片
-
-            fastJsonVersion             : "1.2.57", // json解析
-            webSocketDemoVersion        : "3.0.1", // webSocket
-            zxingVersion                : "2.2.8",// 二维码扫描
-
-            badgeViewVersion            : "1.1.3",// 消息小圆点
-
-            xUpdateVersion              : "1.0.9",// Android 版本更新
-
-            pictureVersion              : "v2.2.3",//本地相册、拍照
-
-            basePopupVersion            : "2.2.1",//底部弹出
-
-            smartRefreshLayoutVersion   : "1.1.0-alpha-28",// 上拉刷新
-            smartRefreshHeaderVersion   : "1.1.0-alpha-28",// 下拉加载
-            swipeDelMenuLayoutVersion   : "V1.2.1",// 侧滑删除
-            flexboxVersion              : "1.1.0",// 流式布局
-
-            immersionBarVersion         : "3.0.0-beta05",// 沉浸式
+            junitVersion              : '4.12',
+            truthVersion              : '0.28',
+            robolectricVersion        : '3.3',
+            mockitoVersion            : '2.8.9',
+            jsonVersion               : '20160810',
+            supportAnnotationsVersion : '27.1.0',
     ]
 
     deps = [
@@ -74,15 +39,14 @@ ext {
             rxappcompat           : "androidx.appcompat:appcompat:${dependVersion.rxappcompatVersion}",
             rxrecyclerview        : "androidx.recyclerview:recyclerview:${dependVersion.rxappcompatVersion}",
             rxcardview            : "androidx.cardview:cardview:${dependVersion.rxVersion}",
-
-            constraintlayout      : "com.android.support.constraint:constraint-layout:${dependVersion.constraintLayoutVersion}",
-            design                : "com.android.support:design:${dependVersion.buildToolsVersion}",
+            rxconstraintlayout    : "androidx.constraintlayout:constraintlayout:1.1.3",
+            flexbox               : "com.google.android:flexbox:2.0.0",//流式布局
 
             //*start rx-java2&rx-android2*//
 //            rxjava                : "io.reactivex:rxjava:${dependVersion.rxjava1Version}",
             rxjava                : "io.reactivex.rxjava2:rxjava:${dependVersion.rxJavaVersion}",
             rxandroid             : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxAndroidVersion}",
-            rxlifecyclecomponents : "com.trello.rxlifecycle3:rxlifecycle-components:${dependVersion.rxLifecycleComponentsVersion}",
+            rxlifecyclecomponents : "com.trello.rxlifecycle3:rxlifecycle-components:3.0.0",
             //*end rx-java2&rx-android2*//
 
             //**********start retrofit2**********//
@@ -93,14 +57,9 @@ ext {
             persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
             //**********end retrofit2**********//
 
-            okhttp3               : "com.squareup.okhttp3:okhttp:${dependVersion.okHttp3Version}",
-            chucklibrary          : "com.readystatesoftware.chuck:library:${dependVersion.chuckLibraryVersion}",
-            gson                  : "com.google.code.gson:gson:${dependVersion.gsonVersion}",
-
-
-            hellodaemon           : "com.xdandroid:hellodaemon:+", // 服务保活
-            eventbus              : "org.greenrobot:eventbus:${dependVersion.eventbusVersion}",
-            greendao              : "org.greenrobot:greendao:${dependVersion.greendaoVersion}",
+            okhttp3               : "com.squareup.okhttp3:okhttp:4.2.2",
+            chucklibrary          : "com.readystatesoftware.chuck:library:1.1.0",
+            gson                  : "com.google.code.gson:gson:2.8.6",
 
             //*start logger*//
             junit                 : "junit:junit:${dependVersion.junitVersion}",
@@ -111,28 +70,27 @@ ext {
             supportAnnotations    : "com.android.support:support-annotations:${dependVersion.supportAnnotationsVersion}",
             //*end logger*//
 
-            serialport            : "com.github.licheedev.Android-SerialPort-API:serialport:${dependVersion.serialportVersion}", // 串口
+            eventbus              : "org.greenrobot:eventbus:3.1.1",
+            greendao              : "org.greenrobot:greendao:3.2.2",
 
-            banner                : "com.youth.banner:banner:${dependVersion.bannerVersion}",//banner轮播
-            glide                 : "com.github.bumptech.glide:glide:${dependVersion.glideVersion}", // glide图片加载
+            immersionbar          : "com.gyf.immersionbar:immersionbar:3.0.0", // 基础依赖包，必须要依赖
+            immersionbarcomponents: "com.gyf.immersionbar:immersionbar-components:3.0.0",// fragment快速实现（可选）
+            immersionBarktx       : "com.gyf.immersionbar:immersionbar-ktx:3.0.0", // kotlin扩展（可选）
 
-            fastjson              : "com.alibaba:fastjson:${dependVersion.fastJsonVersion}",//json解析
-            websocketdemo         : "com.github.0xZhangKe:WebSocketDemo:${dependVersion.webSocketDemoVersion}",// webSocket
-            zxing                 : "com.github.yuzhiqiang1993:zxing:${dependVersion.zxingVersion}",// 二维码扫描
+            smartrefreshlayout    : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0",//上拉刷新
+            smartrefreshheader    : "com.scwang.smartrefresh:SmartRefreshHeader:1.1.0",//下拉加载
+            swipedelmenulayout    : "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0", // 侧滑删除
+            basePopup             : "com.github.razerdp:BasePopup:2.2.1",//PopupWindow
 
-            badgeview             : "q.rorbin:badgeview:${dependVersion.badgeViewVersion}", // 消息小圆点
-            xupdate               : "com.github.xuexiangjys:XUpdate:${dependVersion.xUpdateVersion}",
+            banner                : "com.youth.banner:banner:1.4.10",//banner轮播
+            glide                 : "com.github.bumptech.glide:glide:4.10.0", // glide图片加载
+            zxing                 : "compile 'cn.yipianfengye.android:zxing-library:2.2'",// 二维码集成
+            picture               : "com.github.LuckSiege.PictureSelector:picture_library:v2.4.3",//本地相册、拍照 图片选择器
 
-            smartrefreshlayout    : "com.scwang.smartrefresh:SmartRefreshLayout:${dependVersion.smartRefreshLayoutVersion}",//上拉刷新
-            smartrefreshheader    : "com.scwang.smartrefresh:SmartRefreshHeader:${dependVersion.smartRefreshLayoutVersion}",//下拉加载
-            swipedelmenulayout    : "com.github.mcxtzhang:SwipeDelMenuLayout:${dependVersion.swipeDelMenuLayoutVersion}", // 侧滑删除
-            flexbox               : "com.google.android:flexbox:${dependVersion.flexboxVersion}",//流式布局
+            hellodaemon           : "com.xdandroid:hellodaemon:+", // 服务保活
+            serialport            : "com.github.licheedev.Android-SerialPort-API:serialport:1.0.1", // 硬件串口
 
-            picture               : "com.github.LuckSiege.PictureSelector:picture_library:${dependVersion.pictureVersion}",//本地相册、拍照
-            basePopup             : "com.github.razerdp:BasePopup:${dependVersion.basePopupVersion}",//
-
-            immersionbar          : "com.gyf.immersionbar:immersionbar:${dependVersion.immersionBarVersion}", // 基础依赖包，必须要依赖
-            immersionbarcomponents: "com.gyf.immersionbar:immersionbar-components:${dependVersion.immersionBarVersion}",// fragment快速实现（可选）
-            immersionBarktx       : "com.gyf.immersionbar:immersionbar-ktx:${dependVersion.immersionBarVersion}", // kotlin扩展（可选）
+            badgeview             : "q.rorbin:badgeview:1.1.3", // 小圆点/BadgeView
+            xupdate               : "com.github.xuexiangjys:XUpdate:1.0.9",//升级
     ]
 }

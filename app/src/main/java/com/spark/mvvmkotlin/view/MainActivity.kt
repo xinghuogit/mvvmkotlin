@@ -23,12 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_home_mvvm_java)
         mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val weather = Weather("20191129", "阴天", 1);
         mainViewModel = MainViewModel(weather)
-        mActivityMainBinding.activitymain = mainViewModel;
-        testZip()
+        mActivityMainBinding.mainViewModel = mainViewModel;
+//        testZip()
+    }
+
+    fun v() {
+        println("123")
     }
 
     private fun testZip() {
