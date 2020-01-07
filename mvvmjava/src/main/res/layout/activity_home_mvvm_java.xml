@@ -34,11 +34,11 @@
 
         <variable
             name="dog"
-            type="com.spark.mvvmjava.model.Dog" />
+            type="com.spark.mvvmjava.bean.Dog" />
 
         <variable
             name="yellowDog"
-            type="com.spark.mvvmjava.model.YellowDog" />
+            type="com.spark.mvvmjava.bean.YellowDog" />
 
         <variable
             name="list"

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.Observable;
@@ -23,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.spark.mvvmjava.databinding.HomeMVVMJavaBinding;
 import com.spark.mvvmjava.databinding.ItemSimpleBinding;
-import com.spark.mvvmjava.model.Dog;
-import com.spark.mvvmjava.model.YellowDog;
+import com.spark.mvvmjava.bean.Dog;
+import com.spark.mvvmjava.bean.YellowDog;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,7 @@
-package com.spark.mvvmjava.model;
+package com.spark.mvvmjava.bean;
 
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
-
-import java.util.Observable;
 
 /*************************************************************************************************
  * 日期：2020/1/7 16:47

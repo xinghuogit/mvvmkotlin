@@ -1,4 +1,4 @@
-package com.spark.mvvmjava.model;
+package com.spark.mvvmjava.bean;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
