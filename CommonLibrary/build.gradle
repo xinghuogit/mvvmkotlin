@@ -31,6 +31,7 @@ dependencies {
     api rootProject.ext.deps.rxrecyclerview
     api rootProject.ext.deps.rxcardview
     api rootProject.ext.deps.rxconstraintlayout
+    api rootProject.ext.deps.lifecycle
 
     api rootProject.ext.deps.rxjava
     api rootProject.ext.deps.rxandroid
@@ -41,12 +42,18 @@ dependencies {
 
     api rootProject.ext.deps.okhttp3
     api rootProject.ext.deps.gson
+    api rootProject.ext.deps.roomruntime
+    api rootProject.ext.deps.stetho
 
     api rootProject.ext.deps.glide
 
-//    implementation 'androidx.core:core-ktx:1.1.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //    implementation 'androidx.core:core-ktx:1.1.0'
+//    implementation 'androidx.room:room-runtime:2.2.3'
+//    implementation 'androidx.room:room-compiler:2.2.3'
+//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
 //    api 'androidx.cardview:cardview:1.0.0'
 }

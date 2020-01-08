@@ -293,7 +293,7 @@ object RxJavaTestKotlin {
                 println("常规:onComplete")
             }
         }
-//        observable.subscribe(observer)//建立连接
+        observable.subscribe(observer)//建立连接
 
         //链式操作
         Observable.create(ObservableOnSubscribe<Int> {

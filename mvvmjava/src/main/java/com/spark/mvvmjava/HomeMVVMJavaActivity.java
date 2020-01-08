@@ -1,11 +1,13 @@
 package com.spark.mvvmjava;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,10 +22,14 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.spark.mvvmjava.bean.Dog;
+import com.spark.mvvmjava.bean.User;
+import com.spark.mvvmjava.bean.YellowDog;
 import com.spark.mvvmjava.databinding.HomeMVVMJavaBinding;
 import com.spark.mvvmjava.databinding.ItemSimpleBinding;
-import com.spark.mvvmjava.bean.Dog;
-import com.spark.mvvmjava.bean.YellowDog;
+import com.spark.mvvmjava.ui.LiveDataActivity;
+import com.spark.mvvmjava.ui.RoomActivity;
+import com.spark.mvvmjava.ui.ViewModelActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +43,7 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
     private HomeMVVMJavaBinding binding;
 
     private SimpleAdapter simpleAdapter;
-    private List<MVVMData> simples = new ArrayList<>();
+    private List<Dog> simples = new ArrayList<>();
 
     private Dog dog = new Dog("默认名称", "名言颜色");
     private YellowDog yellowDog = new YellowDog("默认名称", 0);
@@ -48,17 +54,18 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home_mvvm_java);
         binding.setTextStr("点击一下，查看log");
         binding.setUser(new User("李云", 29));
         binding.setOnClickListener(this);
         binding.setMainActivity(this);
 
-        binding.setUserSecond(new com.spark.mvvmjava.alis.User("别名李云", 29));/* <!--import和Alis的使用-->*/
+        binding.setUserSecond(new com.spark.mvvmjava.bean.alis.User("别名李云", 29));/* <!--import和Alis的使用-->*/
 
         /*在recyclerView里的使用  也可Fragment  开始*/
-        simples.add(new MVVMData(getString(R.string.base) + 1, getString(R.string.baseDesc) + 1));
-        simples.add(new MVVMData(getString(R.string.base) + 2, getString(R.string.baseDesc) + 2));
+        simples.add(new Dog(getString(R.string.base) + 1, getString(R.string.baseDesc) + 1));
+        simples.add(new Dog(getString(R.string.base) + 2, getString(R.string.baseDesc) + 2));
         simpleAdapter = new SimpleAdapter(this);
         binding.rv.setAdapter(simpleAdapter);
         simpleAdapter.updateItems(simples);
@@ -105,7 +112,20 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int randowInt = new Random().nextInt(100);
+        Intent intent;
         switch (v.getId()) {
+            case R.id.tvViewModel:
+                intent = new Intent(this, ViewModelActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tvLiveData:
+                intent = new Intent(this, LiveDataActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tvRoom:
+                intent = new Intent(this, RoomActivity.class);
+                startActivity(intent);
+                break;
             case R.id.tv:
                 System.out.println("123456");
                 break;
@@ -129,6 +149,8 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.btnText:
                 binding.btnText.setText(yellowDog.name.get());
+//                Intent intent = new Intent(this, ViewModelActivity.class);
+//                startActivity(intent);
                 break;
         }
     }
@@ -155,19 +177,19 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
     class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.ViewHolder> {
         private Context context;
         private LayoutInflater inflater;
-        private List<MVVMData> list;
+        private List<Dog> list;
 
         public SimpleAdapter(Context context) {
             this.context = context;
             inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public void updateItems(List<MVVMData> list) {
+        public void updateItems(List<Dog> list) {
             this.list = list;
             notifyDataSetChanged();
         }
 
-        public void addItems(List<MVVMData> list) {
+        public void addItems(List<Dog> list) {
             if (this.list == null) this.list = new ArrayList<>();
             this.list.addAll(list);
             notifyDataSetChanged();
@@ -184,9 +206,9 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             ItemSimpleBinding itemSimpleBinding = (ItemSimpleBinding) holder.binding;
-            MVVMData item = list.get(position);
-            itemSimpleBinding.tvTitle.setText(item.getTitle());
-            itemSimpleBinding.tvDesc.setText(item.getDesc());
+            Dog item = list.get(position);
+            itemSimpleBinding.tvTitle.setText(item.getName());
+            itemSimpleBinding.tvDesc.setText(item.getColor());
             itemSimpleBinding.setImageUrl("http://t8.baidu.com/it/u=1484500186,1503043093&fm=79&app=86&f=JPEG?w=1280&h=853");
         }
 
@@ -219,19 +241,19 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
     class MVVMDataAdapter extends RecyclerView.Adapter<MVVMDataAdapter.ViewHolder> {
         private Context context;
         private LayoutInflater inflater;
-        private List<MVVMData> list;
+        private List<Dog> list;
 
         public MVVMDataAdapter(Context context) {
             this.context = context;
             inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public void updateItems(List<MVVMData> list) {
+        public void updateItems(List<Dog> list) {
             this.list = list;
             notifyDataSetChanged();
         }
 
-        public void addItems(List<MVVMData> list) {
+        public void addItems(List<Dog> list) {
             if (this.list == null) this.list = new ArrayList<>();
             this.list.addAll(list);
             notifyDataSetChanged();
@@ -246,7 +268,7 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            MVVMData item = list.get(position);
+            Dog item = list.get(position);
             holder.setData(item, position);
         }
 
@@ -274,11 +296,11 @@ public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickLi
                 tvContent = (TextView) itemView.findViewById(R.id.tvContent);
             }
 
-            public void setData(MVVMData item, final int position) {
+            public void setData(Dog item, final int position) {
                 if (item != null) {
-                    String title = item.getTitle();
+                    String title = item.getName();
                     tvTitle.setText(title);
-                    tvDesc.setText(item.getDesc());
+                    tvDesc.setText(item.getColor());
                     tvJava.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

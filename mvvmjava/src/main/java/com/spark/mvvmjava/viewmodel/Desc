@@ -1,0 +1,32 @@
+还记得MVP中的Model吗。这里的ViewModel有点类似MVP中的Model的作用。但是google出了一套AAC组件。
+这些组件让开发者能开发高效的项目。其中ViewModel也是其中组件之一。
+A、为什么会有这个ViewModel组件
+简介：ViewModel是以生命周期的方式存储与管理UI相关数据
+作用：
+1、在MVVM模式中，使Model与View分离
+2、负责为ui准备数据
+3、存储数据
+这里最大的亮点是以生命周期的方式。举例：假如在Activity里使用。他会贯穿整个Activity里的生命周期。先看张图：
+mvvmkotlin\mvvmjava\src\main\res\mipmap-xhdpi\viewmodel.png
+
+首先把结果先总结以下几点（后面用例子验证）：
+ViewModel只会在Activity存活，且只会创建一次。当销毁时，会主动调用onCleared。
+
+为什么整个生命周期方式很重要？例如：app需要频繁异步请求数据，比如请求网络调接口，这些都是相当耗时。
+比如Activity被销毁后接口请求才返回，考虑到内存泄漏情况，会给我们增添好多复杂工作。
+但现在我们利用ViewModel处理数据回调，可以解决此问题。意思只要继承我们的ViewModel后，
+可能会出现的bug，google都帮我们处理了。
+
+因为在Activity存活时，只创建一次，那么在此Activity下的所有Fragment都可以共享一个ViewModel
+由于 ViewModel 生命周期可能长与 activity 生命周期，所以为了避免内存泄漏Google禁止在ViewModel中持有Context或activity或view的引用。如果非得使用Context，
+可以继承AndroidViewModel 类中获取ApplicationContext
+之前我们在activity销毁重建时，可以用activity的onSaveInstanceState（）机制保存和恢复数据，但缺点明显，
+只适合保存少量的可以被序列化、反序列化的数据。假如我们需要保存一个比较大的数据，这个时候ViewModel就可以实现。
+
+怎么看上面的生命周期图呢
+1、Activity created(走了3个生命周期)，对应于ViewModel的scope。
+2、Activity rorared(类似切换了横竖屏幕)，还是对应scope
+3、finish()（Activity销毁），依赖是scope
+4、Finished （已经销毁了）。调用ViewModel的onCleared。
+这样说很模糊，看一下例子
+

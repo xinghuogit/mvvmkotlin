@@ -5,7 +5,7 @@
 
         <variable
             name="user"
-            type="com.spark.mvvmjava.alis.User" /> <!--import和Alis的使用-->
+            type="com.spark.mvvmjava.bean.alis.User" /> <!--import和Alis的使用-->
     </data>
 
     <LinearLayout

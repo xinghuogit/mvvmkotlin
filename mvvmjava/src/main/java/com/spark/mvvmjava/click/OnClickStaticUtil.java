@@ -1,4 +1,4 @@
-package com.spark.mvvmjava;
+package com.spark.mvvmjava.click;
 
 import android.view.View;
 import android.widget.Toast;

@@ -20,6 +20,10 @@ public class YellowDog {
     public YellowDog() {
     }
 
+    public YellowDog(String name) {
+        this.name.set(name);
+    }
+
     public YellowDog(String name, int age) {
         this.name.set(name);
         this.age.set(age);

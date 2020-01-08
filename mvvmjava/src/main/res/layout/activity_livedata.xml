@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="onlyLive"
+            type="String" /><!--单独使用LiveData设置数据-->
+
+        <variable
+            name="yellowDog"
+            type="com.spark.mvvmjava.bean.YellowDog" /><!--DataBinding双向数据绑定设置数据-->
+
+        <variable
+            name="liveDataViewModel"
+            type="com.spark.mvvmjava.viewmodel.LiveDataViewModel" /><!--ViewModel配合LiveData设置数据-->
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        tools:context=".ui.ViewModelActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单独使用LiveData设置数据：" />
+
+        <TextView
+            android:id="@+id/tvLiveData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{onlyLive}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DataBinding双向数据绑定设置数据：" />
+
+        <TextView
+            android:id="@+id/tvDataBinding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{yellowDog.name}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ViewModel配合LiveData设置数据：" />
+
+        <TextView
+            android:id="@+id/tvLiveDataViewModel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{liveDataViewModel.liveDataName}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{liveDataViewModel.dogMutableLiveData.name}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{liveDataViewModel.dogMutableLiveData.color}" />
+
+    </LinearLayout>
+</layout>

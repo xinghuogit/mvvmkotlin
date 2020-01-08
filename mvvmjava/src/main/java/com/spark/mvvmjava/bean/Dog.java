@@ -2,6 +2,7 @@ package com.spark.mvvmjava.bean;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.room.Ignore;
 
 /*************************************************************************************************
  * 日期：2020/1/7 16:24
@@ -17,6 +18,7 @@ public class Dog extends BaseObservable {
     public Dog() {
     }
 
+    @Ignore
     public Dog(String name, String color) {
         this.name = name;
         this.color = color;
