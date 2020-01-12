@@ -37,8 +37,10 @@ public class User {
     @ColumnInfo(name = "mName")
     private String name;
 
-//    @ColumnInfo
+    //    @ColumnInfo
     private String sex;
+
+    private String phone;
 
     /**
      * @Ignore 忽略掉该字段，不在数据库表中建该字段
@@ -102,6 +104,14 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getAge() {

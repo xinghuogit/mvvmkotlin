@@ -19,7 +19,9 @@ public class DBInstance {
                     appRoomDataBase = Room.databaseBuilder(BaseApplication.getInstance(), AppRoomDataBase.class, DBName)
                             /*allowMainThreadQueries()表示允许主线程进行数据库操作，但不推荐这样做。
                             在这里是为了Demo展示，稍后会结束和LiveData和RxJava的使用*/
-                            .allowMainThreadQueries()
+//                            .allowMainThreadQueries()
+                            /*.addMigrations(AppRoomDataBase.migration_1_2,AppRoomDataBase.migration_2_3)//例子*/
+                            .addMigrations(AppRoomDataBase.migration_1_2)
                             .build();
                 }
             }

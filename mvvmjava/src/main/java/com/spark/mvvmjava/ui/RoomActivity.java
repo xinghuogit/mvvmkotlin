@@ -1,25 +1,32 @@
 package com.spark.mvvmjava.ui;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.spark.mvvmjava.DBInstance;
 import com.spark.mvvmjava.R;
 import com.spark.mvvmjava.bean.Dog;
 import com.spark.mvvmjava.bean.User;
-import com.spark.mvvmjava.bean.YellowDog;
-import com.spark.mvvmjava.databinding.ActivityLivedataBinding;
 import com.spark.mvvmjava.databinding.ActivityRoomBinding;
-import com.spark.mvvmjava.viewmodel.LiveDataViewModel;
+
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeObserver;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 简介：
@@ -70,6 +77,126 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 User user = new User("第一条", "男", 12);
                 User user2 = new User("第二条", "女", 12, new Dog("小狗", "白色"));
                 DBInstance.getInstance().getUserDao().insert(user, user2);
+                break;
+            case R.id.tvGetRxJavaRoomUsers:
+                DBInstance.getInstance().getUserDao().getAllRx()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<List<User>>() {
+                            @Override
+                            public void accept(List<User> users) throws Exception {
+                                binding.tvGetRxJavaRoomUsers.setText("RxJavaRoom获取数据库条数:" + users.size());
+                            }
+                        });
+                break;
+            case R.id.tvGetRxJavaRoomCompletable:
+                Completable.fromCallable(new Callable<List<Long>>() {
+                    @Override
+                    public List<Long> call() throws Exception {
+                        User user = new User("Completable", "男", 12);
+                        return DBInstance.getInstance().getUserDao().insertL(user);
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.i(TAG, "tvGetRxJavaRoomCompletable onComplete: ");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i(TAG, "tvGetRxJavaRoomCompletable onError: e.getMessage()：" + e.getMessage());
+                            }
+                        });
+
+                break;
+            case R.id.tvGetRxJavaRoomSingle:
+               /* .subscribeOn(Schedulers.io())//也可以设置无返回值
+                .subscribe();//也可以设置无返回值*/
+                Single.fromCallable(new Callable<List<Long>>() {
+                    @Override
+                    public List<Long> call() throws Exception {
+                        User user = new User("第100条", "男", 12);
+                        return DBInstance.getInstance().getUserDao().insertL(user);
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<List<Long>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(List<Long> longs) {
+                                for (Long data : longs) {
+                                    Log.i(TAG, "tvGetRxJavaRoomSingle onSuccess：" + data);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i(TAG, "tvGetRxJavaRoomSingle onError: e.getMessage()：" + e.getMessage());
+                            }
+                        });
+                break;
+            case R.id.tvGetRxJavaRoomMaybe:
+               /* .subscribeOn(Schedulers.io())//也可以设置无返回值
+                .subscribe();//也可以设置无返回值*/
+                Maybe.fromCallable(new Callable<List<Long>>() {
+                    @Override
+                    public List<Long> call() throws Exception {
+                        User user = new User("第100条", "男", 12);
+                        return DBInstance.getInstance().getUserDao().insertL(user);
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MaybeObserver<List<Long>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(List<Long> longs) {
+                                for (Long data : longs) {
+                                    Log.i(TAG, "tvGetRxJavaRoomMaybe onSuccess：" + data);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i(TAG, "tvGetRxJavaRoomMaybe onError: e.getMessage()：" + e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.i(TAG, "tvGetRxJavaRoomMaybe onComplete()：");
+                            }
+                        });
+                break;
+
+            case R.id.tvRoomLiveData:
+                DBInstance.getInstance().getUserDao().getToListData(2, 12)
+                        .observe(this, new Observer<List<User>>() {
+                            @Override
+                            public void onChanged(List<User> users) {
+                                Log.i(TAG, "tvRoomLiveData" + users.size());
+                                for (int i = 0; i < users.size(); i++) {
+                                    User user1 = users.get(i);
+                                    Log.i(TAG, "user1.getName()" + user1.getName());
+                                }
+                            }
+                        });
                 break;
         }
     }

@@ -23,8 +23,7 @@ import static androidx.room.ForeignKey.CASCADE;
  * SET_DEFAULT：当person中的uuid有变化的时候clothes的ownerUuid会设置为默认值，我这里是int型，那么会设置为0
  * CASCADE：当person中的uuid有变化的时候clothes的ownerUuid跟着变化，假如我把uuid = 1的数据删除，那么clothes表里，ownerUuid = 1的都会被删除。
  */
-@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE, onUpdate = CASCADE, entity = User.class, parentColumns = "uuid", childColumns = "ownerUuid")
-        ,indices = {@Index(value = "id",unique = true),@Index(value = "ownerUuid")})
+@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE, onUpdate = CASCADE, entity = User.class, parentColumns = "uuid", childColumns = "ownerUuid"))
 public class Book {
     @PrimaryKey(autoGenerate = true)
     private long id;

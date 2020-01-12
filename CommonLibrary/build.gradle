@@ -43,6 +43,7 @@ dependencies {
     api rootProject.ext.deps.okhttp3
     api rootProject.ext.deps.gson
     api rootProject.ext.deps.roomruntime
+    api rootProject.ext.deps.roomrxjava
     api rootProject.ext.deps.stetho
 
     api rootProject.ext.deps.glide
