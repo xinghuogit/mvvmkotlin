@@ -1,12 +1,11 @@
 package com.spark.mvvmjava;
 
-
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 
 /*************************************************************************************************
- * 日期：2020/1/8 16:13
+ * 日期：2020/1/13 14:04
  * 作者：李加蒙
  * 邮箱：1829870839@qq.com
  * 描述：

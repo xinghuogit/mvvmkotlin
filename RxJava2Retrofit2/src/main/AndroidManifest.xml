@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.spark.myapplication">
+    package="com.spark.mvvmjava">
 
     <uses-permission android:name="android.permission.INTERNET" />  <!-- 允许程序访问有关网络权限 -->
 <!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />  &lt;!&ndash; 允许程序访问有关GSM网络信息 &ndash;&gt;-->
@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Retrofit2Activity"></activity>
-        <activity android:name=".RxJava2Activity">
+        <activity android:name="com.spark.mvvmjava.Retrofit2Activity"></activity>
+        <activity android:name="com.spark.mvvmjava.RxJava2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

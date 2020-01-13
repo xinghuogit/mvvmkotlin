@@ -22,6 +22,9 @@ android {
         }
     }
 
+    dataBinding {//dataBinding  true开启  false关闭
+        enabled = true
+    }
 }
 
 dependencies {
@@ -46,9 +49,16 @@ dependencies {
     api rootProject.ext.deps.roomrxjava
     api rootProject.ext.deps.stetho
 
+    api rootProject.ext.deps.immersionbar
+
+    api rootProject.ext.deps.smartrefreshlayout
+    api rootProject.ext.deps.smartrefreshheader
+
     api rootProject.ext.deps.glide
+    api rootProject.ext.deps.banner
 
-
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

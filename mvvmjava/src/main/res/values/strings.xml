@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">MVVMJava</string>
-    <string name="click_show_message">点击弹出消息</string>
-
-
 </resources>

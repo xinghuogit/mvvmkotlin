@@ -23,8 +23,8 @@ object DateUtils {
      *@strDateTime 时间戳转换成为时间
      *@time 时间戳 dateTime_yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss"
      */
-    fun getDateTimeToStr(timeStamp: Long): String {
-        return getDateTimeToStr(timeStamp, dateTime_yyyyMMddHHmmss)
+    fun getTimeStampToDateTime(timeStamp: Long): String {
+        return getTimeStampToDateTime(timeStamp, dateTime_yyyyMMddHHmmss)
     }
 
     /**
@@ -32,7 +32,7 @@ object DateUtils {
      *@time 时间戳
      *@str  转换成为时间的格式 "yyyy-MM-dd HH:mm:ss" yyyy年MM月dd日 yyyyMMddHHmmss
      */
-    fun getDateTimeToStr(timeStamp: Long, str: String): String {
+    fun getTimeStampToDateTime(timeStamp: Long, str: String): String {
         var format = SimpleDateFormat(str, Locale.getDefault());
         var date = Date(isMS(timeStamp));
         var dateTimeToStr = format.format(date);

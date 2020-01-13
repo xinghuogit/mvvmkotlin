@@ -18,13 +18,6 @@ ext {
             retrofitVersion           : "2.7.0",
             persistentCookieJarVersion: "v1.0.0",
             //**********retrofit2  end**********//
-
-            junitVersion              : '4.12',
-            truthVersion              : '0.28',
-            robolectricVersion        : '3.3',
-            mockitoVersion            : '2.8.9',
-            jsonVersion               : '20160810',
-            supportAnnotationsVersion : '27.1.0',
     ]
 
     deps = [
@@ -37,58 +30,49 @@ ext {
             flexbox               : "com.google.android:flexbox:2.0.0",//流式布局
             lifecycle             : "androidx.lifecycle:lifecycle-extensions:2.1.0",//lifecycle
 
-            //*start rx-java2&rx-android2*//
+            //**********rx-java2&rx-android2  start**********//
 //            rxjava                : "io.reactivex:rxjava:1.3.0",
             rxjava                : "io.reactivex.rxjava2:rxjava:2.2.7",
             rxandroid             : "io.reactivex.rxjava2:rxandroid:2.1.1",
             rxlifecyclecomponents : "com.trello.rxlifecycle3:rxlifecycle-components:3.0.0",
-            //*end rx-java2&rx-android2*//
+            //**********rx-java2&rx-android2  end**********//
 
-            //**********start retrofit2**********//
+            //**********retrofit2  start**********//
             retrofit              : "com.squareup.retrofit2:retrofit:${dependVersion.retrofitVersion}",
             retrofitconvertergson : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofitVersion}",//ConverterFactory的Gson依赖包
             retrofitadapterrxjava2: "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofitVersion}",//CallAdapterFactory的Rx依赖包
             converterscalars      : "com.squareup.retrofit2:converter-scalars:${dependVersion.retrofitVersion}",
             persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
-            //**********end retrofit2**********//
+            //**********retrofit2  end**********//
 
             okhttp3               : "com.squareup.okhttp3:okhttp:4.2.2",
             chucklibrary          : "com.readystatesoftware.chuck:library:1.1.0",
             gson                  : "com.google.code.gson:gson:2.8.6",
-            roomruntime           : "androidx.room:room-runtime:2.2.3",
-            roomcompiler          : "androidx.room:room-compiler:2.2.3",
-            roomrxjava            : "androidx.room:room-rxjava2:2.2.3",
+            roomruntime           : "androidx.room:room-runtime:2.2.3",//room数据库
+            roomcompiler          : "androidx.room:room-compiler:2.2.3",//room数据库操作在使用gradle必须引用
+            roomrxjava            : "androidx.room:room-rxjava2:2.2.3",//room数据库RxJava操作
             stetho                : "com.facebook.stetho:stetho:1.5.1",//通过chrome来查看android数据库
 
-            //*start logger*//
-            junit                 : "junit:junit:${dependVersion.junitVersion}",
-            truth                 : "com.google.truth:truth:${dependVersion.truthVersion}",
-            robolectric           : "org.robolectric:robolectric:${dependVersion.robolectricVersion}",
-            mockito               : "org.mockito:mockito-core:${dependVersion.mockitoVersion}",
-            json                  : "org.json:json:${dependVersion.jsonVersion}",
-            supportAnnotations    : "com.android.support:support-annotations:${dependVersion.supportAnnotationsVersion}",
-            //*end logger*//
-
-//            greendao              : "org.greenrobot:greendao:3.2.2",
+//            greendao              : "org.greenrobot:greendao:3.2.2",//GreenDao数据库
             eventbus              : "org.greenrobot:eventbus:3.1.1",
-            immersionbar          : "com.gyf.immersionbar:immersionbar:3.0.0", // 基础依赖包，必须要依赖
-            immersionbarcomponents: "com.gyf.immersionbar:immersionbar-components:3.0.0",// fragment快速实现（可选）
-            immersionBarktx       : "com.gyf.immersionbar:immersionbar-ktx:3.0.0", // kotlin扩展（可选）
+            immersionbar          : "com.gyf.immersionbar:immersionbar:3.0.0", //基础依赖包，必须要依赖
+            immersionbarcomponents: "com.gyf.immersionbar:immersionbar-components:3.0.0",//fragment快速实现（可选）
+            immersionBarktx       : "com.gyf.immersionbar:immersionbar-ktx:3.0.0", //kotlin扩展（可选）
 
             smartrefreshlayout    : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0",//上拉刷新
             smartrefreshheader    : "com.scwang.smartrefresh:SmartRefreshHeader:1.1.0",//下拉加载
             swipedelmenulayout    : "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0", // 侧滑删除
             basePopup             : "com.github.razerdp:BasePopup:2.2.1",//PopupWindow
 
-            banner                : "com.youth.banner:banner:1.4.10",//banner轮播
             glide                 : "com.github.bumptech.glide:glide:4.10.0", // glide图片加载
+            banner                : "com.youth.banner:banner:1.4.10",//banner轮播
             zxing                 : "compile 'cn.yipianfengye.android:zxing-library:2.2'",// 二维码集成
             picture               : "com.github.LuckSiege.PictureSelector:picture_library:v2.4.3",//本地相册、拍照 图片选择器
 
             hellodaemon           : "com.xdandroid:hellodaemon:+", // 服务保活
             serialport            : "com.github.licheedev.Android-SerialPort-API:serialport:1.0.1", // 硬件串口
 
-            badgeview             : "q.rorbin:badgeview:1.1.3", // 小圆点/BadgeView
+            badgeview             : "q.rorbin:badgeview:1.1.3", // BadgeView/小圆点
             xupdate               : "com.github.xuexiangjys:XUpdate:1.0.9",//升级
     ]
 }

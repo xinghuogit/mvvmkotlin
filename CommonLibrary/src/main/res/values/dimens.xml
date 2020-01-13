@@ -178,12 +178,13 @@
     <dimen name="space_3">3.0dp</dimen>
     <dimen name="space_2">2.0dp</dimen>
     <dimen name="space_1">1.0dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 
-<!--    <dimen name="guide_filling">10dp</dimen>-->
-<!--    <dimen name="guide_group_name_text_size">18sp</dimen>-->
-<!--    <dimen name="guide_detail_text_size">16sp</dimen>-->
-<!--    <dimen name="guide_group_icon_size">18dp</dimen>-->
-<!--    <dimen name="guide_child_icon_size">16dp</dimen>-->
+    <!--    <dimen name="guide_filling">10dp</dimen>-->
+    <!--    <dimen name="guide_group_name_text_size">18sp</dimen>-->
+    <!--    <dimen name="guide_detail_text_size">16sp</dimen>-->
+    <!--    <dimen name="guide_group_icon_size">18dp</dimen>-->
+    <!--    <dimen name="guide_child_icon_size">16dp</dimen>-->
 
 </resources>
