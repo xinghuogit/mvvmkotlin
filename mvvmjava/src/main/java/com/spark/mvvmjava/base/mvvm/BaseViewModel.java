@@ -1,4 +1,4 @@
-package com.library.common.mvvm;
+package com.spark.mvvmjava.base.mvvm;
 
 import android.app.Application;
 

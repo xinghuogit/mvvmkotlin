@@ -2,6 +2,8 @@ package com.library.common.base;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,5 +38,15 @@ public abstract class BaseFragment extends Fragment {
 
     public <T extends View> T findView(View view, int id) {
         return (T) view.findViewById(id);
+    }
+
+    //快速获取textView 或 EditText上文字内容
+    public String getStringByUI(View view) {
+        if (view instanceof EditText) {
+            return ((EditText) view).getText().toString().trim();
+        } else if (view instanceof TextView) {
+            return ((TextView) view).getText().toString().trim();
+        }
+        return "";
     }
 }

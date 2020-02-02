@@ -42,6 +42,7 @@ dependencies {
     api rootProject.ext.deps.retrofit
     api rootProject.ext.deps.retrofitconvertergson
     api rootProject.ext.deps.retrofitadapterrxjava2
+    api rootProject.ext.deps.persistentcookiejar
 
     api rootProject.ext.deps.okhttp3
     api rootProject.ext.deps.gson

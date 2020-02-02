@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">CommonLibrary</string>
+    <string name="resultNetworkError">网络不给力，请检查网络</string>
+    <string name="resultServerError">服务器连接失败，请稍后再试</string>
+    <string name="resultServerTimeout">服务器连接超时，请稍后再试</string>
+    <string name="resultEmptyError">系统繁忙，请稍后再试</string>
+    <string name="editDigit">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="loginAgree">注册即代表您同意用户服务协议、隐私协议</string>
 </resources>

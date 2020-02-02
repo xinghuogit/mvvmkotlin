@@ -2,7 +2,7 @@ ext {
     android = [
             compileSdkVersion: 29,
             buildToolsVersion: "29.0.2",
-            minSdkVersion    : 19,
+            minSdkVersion    : 21,
             targetSdkVersion : 25,
             versionCode      : 1,
             versionName      : "0.0.1",
@@ -11,12 +11,11 @@ ext {
     ]
 
     dependVersion = [
-            rxappcompatVersion        : '1.1.0',
-            rxVersion                 : '1.0.0',
+            rxappcompatVersion: '1.1.0',
+            rxVersion         : '1.0.0',
 
             //**********retrofit2  start**********//
-            retrofitVersion           : "2.7.0",
-            persistentCookieJarVersion: "v1.0.0",
+            retrofitVersion   : "2.7.0",
             //**********retrofit2  end**********//
     ]
 
@@ -42,7 +41,7 @@ ext {
             retrofitconvertergson : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofitVersion}",//ConverterFactory的Gson依赖包
             retrofitadapterrxjava2: "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofitVersion}",//CallAdapterFactory的Rx依赖包
             converterscalars      : "com.squareup.retrofit2:converter-scalars:${dependVersion.retrofitVersion}",
-            persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:${dependVersion.persistentCookieJarVersion}",
+            persistentcookiejar   : "com.github.franmontiel:PersistentCookieJar:v1.0.1",
             //**********retrofit2  end**********//
 
             okhttp3               : "com.squareup.okhttp3:okhttp:4.2.2",
@@ -64,7 +63,8 @@ ext {
             swipedelmenulayout    : "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0", // 侧滑删除
             basePopup             : "com.github.razerdp:BasePopup:2.2.1",//PopupWindow
 
-            glide                 : "com.github.bumptech.glide:glide:4.10.0", // glide图片加载
+            glide                 : "com.github.bumptech.glide:glide:4.11.0", // glide图片加载
+            glidecompiler         : "com.github.bumptech.glide:compiler:4.11.0", // glide图片加载
             banner                : "com.youth.banner:banner:1.4.10",//banner轮播
             zxing                 : "compile 'cn.yipianfengye.android:zxing-library:2.2'",// 二维码集成
             picture               : "com.github.LuckSiege.PictureSelector:picture_library:v2.4.3",//本地相册、拍照 图片选择器

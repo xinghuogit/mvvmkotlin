@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.library.common.utils.LogUtils;
 import com.spark.mvvmjavastudy.R;
 import com.spark.mvvmjavastudy.databinding.FragmentViewModelBinding;
 import com.spark.mvvmjavastudy.viewmodel.ViewModelActivity;

@@ -2,6 +2,8 @@
 <resources>
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="status_background">#1EB0F1</color>
 
     <color name="color_99000000">#99000000</color>
     <color name="color_60000000">#60000000</color>
