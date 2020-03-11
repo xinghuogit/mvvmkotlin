@@ -77,7 +77,7 @@ public class OfflineCacheInterceptor implements Interceptor {
     /**
      * @param offlineCacheTime 单位秒 离线的时候的缓存的过期时间
      */
-    public void setOnlineCacheTime(int offlineCacheTime) {
+    public void setOfflineCacheTime(int offlineCacheTime) {
         this.offlineCacheTime = offlineCacheTime;
     }
 }

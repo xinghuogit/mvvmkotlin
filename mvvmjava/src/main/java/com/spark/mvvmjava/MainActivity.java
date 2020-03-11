@@ -60,7 +60,6 @@ public class MainActivity extends MVVMBaseActivity<MainViewModel, ActivityMainBi
             @Override
             public void onChanged(Resource<List<Advert>> listResource) {
                 listResource.handler(new OnCallback<List<Advert>>() {
-
                     @Override
                     public void onSuccess(List<Advert> data) {
                         updateBanner(data);

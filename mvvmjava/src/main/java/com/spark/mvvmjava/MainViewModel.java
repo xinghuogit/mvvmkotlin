@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.spark.mvvmjava.base.mvvm.BaseViewModel;
-import com.library.common.utils.LogUtils;
 import com.spark.mvvmjava.bean.Advert;
 import com.spark.mvvmjava.network.Resource;
 import com.spark.mvvmjava.network.ResponseModel;
@@ -30,6 +29,7 @@ public class MainViewModel extends BaseViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
+
 
     public MutableLiveData<Resource<List<Advert>>> getAdverts() {
         /**

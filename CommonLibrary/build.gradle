@@ -38,6 +38,7 @@ dependencies {
 
     api rootProject.ext.deps.rxjava
     api rootProject.ext.deps.rxandroid
+    api rootProject.ext.deps.rxlifecyclecomponents
 
     api rootProject.ext.deps.retrofit
     api rootProject.ext.deps.retrofitconvertergson
