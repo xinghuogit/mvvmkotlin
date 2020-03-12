@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
  * 邮箱：1829870839@qq.com
  * 描述：
  ************************************************************************************************/
-public class BaseActivity extends AppCompatActivity {
+public class StudyActivity extends AppCompatActivity {
 
     public void showToast(String message) {
         System.out.println(message);
         System.out.println("message");
-        Toast.makeText(BaseActivity.this, "message", Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudyActivity.this, "message", Toast.LENGTH_SHORT).show();
     }
 }

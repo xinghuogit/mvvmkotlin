@@ -7,5 +7,5 @@ package com.library.common.api;
  * 描述：
  ************************************************************************************************/
 public class Urls {
-    public static final String BaseUrl = "https://www.wanandroid.com";
+    public static final String BaseUrl = "https://www.wanandroid.com/";
 }

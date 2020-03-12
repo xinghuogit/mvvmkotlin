@@ -7,9 +7,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.trello.rxlifecycle3.components.support.RxFragmentActivity;
 
 /*************************************************************************************************
  * 日期：2020/1/13 13:09
@@ -17,7 +17,7 @@ import com.gyf.immersionbar.ImmersionBar;
  * 邮箱：1829870839@qq.com
  * 描述：基础Activity
  ************************************************************************************************/
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends RxFragmentActivity {
     public static int total;//总量
     public static int pageIndex = 1;//当前页码
     public static int pageSize = 20;//每页数量

@@ -1,4 +1,4 @@
-package com.spark.mvvmjava;
+package com.spark.mvvmjava.ui;
 
 import android.view.View;
 
@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 
 import com.library.common.utils.DateUtils;
 import com.library.common.utils.LogUtils;
+import com.spark.mvvmjava.R;
 import com.spark.mvvmjava.base.mvvm.MVVMBaseActivity;
 import com.spark.mvvmjava.bean.Advert;
 import com.spark.mvvmjava.databinding.ActivityMainBinding;
@@ -56,7 +57,7 @@ public class MainActivity extends MVVMBaseActivity<MainViewModel, ActivityMainBi
     }
 
     private void getAdverts() {
-        mViewModel.getAdverts().observe(this, new Observer<Resource<List<Advert>>>() {
+        mViewModel.getBannerList().observe(this, new Observer<Resource<List<Advert>>>() {
             @Override
             public void onChanged(Resource<List<Advert>> listResource) {
                 listResource.handler(new OnCallback<List<Advert>>() {

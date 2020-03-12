@@ -51,6 +51,7 @@ public abstract class MVVMBaseActivity<VM extends BaseViewModel, VDB extends Vie
                 modelClass = BaseViewModel.class; //如果没有指定泛型参数，则默认使用BaseViewModel
             }
             mViewModel = (VM) ViewModelProviders.of(this).get(modelClass);
+            mViewModel.setLifecycleTransformer(bindToLifecycle());
         }
     }
 

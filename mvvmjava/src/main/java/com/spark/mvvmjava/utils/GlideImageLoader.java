@@ -16,6 +16,9 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  * 描述：
  ************************************************************************************************/
 public class GlideImageLoader extends ImageLoader {
+    public GlideImageLoader() {
+    }
+
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         Glide.with(context).load(path)

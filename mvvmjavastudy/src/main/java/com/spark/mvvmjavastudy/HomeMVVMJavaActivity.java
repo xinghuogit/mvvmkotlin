@@ -38,7 +38,7 @@ import java.util.Random;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class HomeMVVMJavaActivity extends BaseActivity implements View.OnClickListener {
+public class HomeMVVMJavaActivity extends StudyActivity implements View.OnClickListener {
     private static final String TAG = "HomeMVVMJavaActivity";
 
     private HomeMVVMJavaBinding binding;
