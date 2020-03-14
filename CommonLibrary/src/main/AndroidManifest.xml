@@ -6,6 +6,5 @@
 
     <application>
         <activity android:name=".base.BaseActivity" />
-        <activity android:name="com.spark.mvvmjava.base.mvvm.MVVMBaseActivity" />
     </application>
 </manifest>

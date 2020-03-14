@@ -15,6 +15,10 @@ public class BaseApplication extends CommonBaseApplication {
     public void onCreate() {
         super.onCreate();
         context = this;
+
+        AppConfig.initFilesDir();
+        AppConfig.initSmartRefreshLayout();
+        AppConstant.getUserInfo();
     }
 
     public static BaseApplication getInstance() {

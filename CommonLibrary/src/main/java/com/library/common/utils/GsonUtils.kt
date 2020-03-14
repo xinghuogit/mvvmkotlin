@@ -11,16 +11,21 @@ import java.lang.reflect.Type
  * 描述：
  ************************************************************************************************/
 class GsonUtils {
+    private object Instance {
+        val INSTANCE = GsonUtils();
+    }
+
     private var gson: Gson? = null;
 
     companion object {
-        private var instant: GsonUtils? = null
-            get() {
-                if (instant == null)
-                    instant = GsonUtils()
-
-                return instant
-            }
+        val instant: GsonUtils by lazy { Instance.INSTANCE }
+//        private var instant: GsonUtils? = null
+//            get() {
+//                if (instant == null)
+//                    instant = GsonUtils()
+//
+//                return instant
+//            }
     }
 
     private constructor() {
@@ -28,16 +33,12 @@ class GsonUtils {
             .create()
     }
 
-    fun get(): GsonUtils { //细心的小伙伴肯定发现了，这里不用getInstance作为为方法名，是因为在伴生对象声明时，内部已有getInstance方法，所以只能取其他名字
-        return instant!!
-    }
-
     fun <T> fromJson(text: String, type: Class<T>): T? {
-        return get().parse(text, type)
+        return parse(text, type)
     }
 
     fun <T> fromJson(text: String, type: Type): T? {
-        return get().parse(text, type)
+        return parse(text, type)
     }
 
     private fun <T> parse(text: String, type: Type): T? {
@@ -60,7 +61,7 @@ class GsonUtils {
      */
     fun getObjectToJson(o: Any?): String? {
         try {
-            return get().gson!!.toJson(o)
+            return gson!!.toJson(o)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,7 +1,11 @@
 package com.spark.mvvmjava.base.mvvm;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -9,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.gson.JsonSyntaxException;
 import com.library.common.base.BaseActivity;
+import com.library.common.base.BaseFragment;
 import com.library.common.utils.NetWorkUtils;
 import com.library.common.utils.ToastUtils;
 import com.spark.mvvmjava.R;
@@ -25,21 +30,31 @@ import java.net.SocketTimeoutException;
  * 邮箱：1829870839@qq.com
  * 描述：
  ************************************************************************************************/
-public abstract class MVVMBaseActivity<VM extends BaseViewModel, VDB extends ViewDataBinding> extends BaseActivity {
+public abstract class MVVMBaseFragment<VM extends BaseViewModel, VDB extends ViewDataBinding> extends BaseFragment {
 
     protected VM mViewModel;
     protected VDB binding;
+    protected View mContentView;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, getContentViewId());//初始化binding
-        binding.setLifecycleOwner(this);///给binding加上感知生命周期，BaseActivity就是lifeOwner，ComponentActivity实现lifeOwner
-        createViewModel();
-        initView();
-        initData();
-        initListener();
-        setData();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mContentView == null) {
+            binding = DataBindingUtil.inflate(inflater, getContentViewId(), null, false);//初始化binding
+            mContentView = binding.getRoot();
+            binding.setLifecycleOwner(this);///给binding加上感知生命周期，BaseActivity就是lifeOwner，ComponentActivity实现lifeOwner
+            createViewModel();
+            initView(mContentView);
+            initData();
+            initListener();
+            setData();
+        } else {
+            ViewGroup parent = (ViewGroup) mContentView.getParent();
+            if (parent != null) {
+                parent.removeView(mContentView);
+            }
+        }
+        return mContentView;
     }
 
     public void createViewModel() {
@@ -68,7 +83,6 @@ public abstract class MVVMBaseActivity<VM extends BaseViewModel, VDB extends Vie
                 ToastUtils.INSTANCE.showToast(getString(R.string.resultNetworkError));
                 return;
             }
-
             if (throwable instanceof ConnectException) {
                 ToastUtils.INSTANCE.showToast(getString(R.string.resultServerError));
             } else if (throwable instanceof SocketTimeoutException) {

@@ -1,5 +1,6 @@
 package com.spark.mvvmjava.ui;
 
+import android.content.Intent;
 import android.view.View;
 
 import androidx.lifecycle.Observer;
@@ -9,20 +10,21 @@ import com.library.common.utils.LogUtils;
 import com.spark.mvvmjava.R;
 import com.spark.mvvmjava.base.mvvm.MVVMBaseActivity;
 import com.spark.mvvmjava.bean.Advert;
-import com.spark.mvvmjava.databinding.ActivityMainBinding;
+import com.spark.mvvmjava.databinding.FragmentHomeBinding;
 import com.spark.mvvmjava.network.Resource;
+import com.spark.mvvmjava.ui.test.TestActivity;
 import com.spark.mvvmjava.utils.GlideImageLoader;
 import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends MVVMBaseActivity<MainViewModel, ActivityMainBinding> implements View.OnClickListener {
+public class MainActivity extends MVVMBaseActivity<MainViewModel, FragmentHomeBinding> implements View.OnClickListener {
     private static final String TAG = "MainActivity";
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_main;
+        return R.layout.fragment_home;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MainActivity extends MVVMBaseActivity<MainViewModel, ActivityMainBi
 
     @Override
     public void initListener() {
-        binding.btn.setOnClickListener(this);
+        binding.btnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -49,9 +51,11 @@ public class MainActivity extends MVVMBaseActivity<MainViewModel, ActivityMainBi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn:
-                getAdverts();
-                LogUtils.INSTANCE.i(TAG, "点击时间：" + DateUtils.INSTANCE.getTimeStampToDateTime(System.currentTimeMillis()) + "  System.currentTimeMillis()：" + System.currentTimeMillis());
+            case R.id.btnLogin:
+                Intent intent = new Intent(this, TestActivity.class);
+                startActivity(intent);
+//                getAdverts();
+//                LogUtils.INSTANCE.i(TAG, "点击时间：" + DateUtils.INSTANCE.getTimeStampToDateTime(System.currentTimeMillis()) + "  System.currentTimeMillis()：" + System.currentTimeMillis());
                 break;
         }
     }

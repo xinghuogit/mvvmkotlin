@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_10"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_15" />
+
+        <LinearLayout
+            android:id="@+id/llTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginTop="@dimen/space_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_2"
+                android:text="作者"
+                android:textColor="#00D800"
+                android:textSize="@dimen/txt_10" />
+
+            <TextView
+                android:id="@+id/tvAurtor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_4"
+                android:text="Leo"
+                android:textColor="#949494"
+                android:textSize="@dimen/txt_13" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_15"
+                android:padding="@dimen/space_2"
+                android:text="来源"
+                android:textColor="#D56240"
+                android:textSize="@dimen/txt_10" />
+
+            <TextView
+                android:id="@+id/tvCome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_4"
+                android:text="公众号"
+                android:textColor="#949494"
+                android:textSize="@dimen/txt_13" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvBlogFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llTag"
+            android:layout_marginTop="@dimen/space_7"
+            android:text="2天前"
+            android:textColor="#949494"
+            android:textSize="@dimen/txt_13" />
+
+        <TextView
+            android:id="@+id/tvCollect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llTag"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/space_7"
+            android:text="未收藏"
+            android:textColor="#949494"
+            android:textSize="@dimen/txt_13" />
+    </RelativeLayout>
+</layout>

@@ -7,24 +7,41 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="vertical"
         tools:context=".ui.MainActivity">
 
-        <com.youth.banner.Banner
-            android:id="@+id/banner"
+        <LinearLayout
+            android:id="@+id/rlViewBottom"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/space_210"
-            android:background="@color/color_ffeeeeee" />
-
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="点击请求" />
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1"
+                android:background="@color/color_ffeeeeee" />
+
+            <include
+                android:id="@+id/viewBottom"
+                layout="@layout/view_bottom" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rlViewBottom">
+
+            <!--视图翻页工具-->
+            <com.library.common.view.CustomViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </RelativeLayout>
+    </RelativeLayout>
 </layout>

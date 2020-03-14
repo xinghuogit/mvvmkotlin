@@ -7,9 +7,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.gyf.immersionbar.ImmersionBar;
 import com.trello.rxlifecycle3.components.support.RxFragmentActivity;
+
+import java.lang.ref.WeakReference;
 
 /*************************************************************************************************
  * 日期：2020/1/13 13:09
@@ -22,6 +25,10 @@ public abstract class BaseActivity extends RxFragmentActivity {
     public static int pageIndex = 1;//当前页码
     public static int pageSize = 20;//每页数量
 
+    public boolean mRefresh = false;
+
+    private WeakReference<FragmentActivity> currentActivity = null;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -29,7 +36,18 @@ public abstract class BaseActivity extends RxFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
         ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).init();
+        currentActivity = new WeakReference<FragmentActivity>(this);
     }
+
+    /**
+     * 获取当前activity的引用
+     *
+     * @return
+     */
+    public FragmentActivity getCurrentActivity() {
+        return currentActivity == null ? null : currentActivity.get();
+    }
+
 
     public abstract int getContentViewId();
 
@@ -40,6 +58,15 @@ public abstract class BaseActivity extends RxFragmentActivity {
     public abstract void initListener();
 
     public abstract void setData();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (currentActivity != null) {
+            currentActivity.clear();
+            currentActivity = null;
+        }
+    }
 
     public <T extends View> T findView(int id) {
         return (T) findViewById(id);

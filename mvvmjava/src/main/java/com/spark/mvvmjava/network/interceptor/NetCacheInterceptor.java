@@ -50,7 +50,7 @@ public class NetCacheInterceptor implements Interceptor {
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
-        String token = SPUtils.getString("UserToken", "");
+        String token = SPUtils.getInstance().getString("UserToken", "");
         if (!TextUtils.isEmpty(token)) {
             builder.addHeader("Token", token).build();
         }
@@ -58,7 +58,7 @@ public class NetCacheInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         List<String> list = response.headers().values("Token");
         if (list.size() > 0) {
-            SPUtils.putString("UserToken", list.get(0));
+            SPUtils.getInstance().putString("UserToken", list.get(0));
         }
         //如果有时间就设置缓存
         if (onlineCacheTime != 0) {

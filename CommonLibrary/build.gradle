@@ -35,6 +35,7 @@ dependencies {
     api rootProject.ext.deps.rxcardview
     api rootProject.ext.deps.rxconstraintlayout
     api rootProject.ext.deps.lifecycle
+    api rootProject.ext.deps.matrial
 
     api rootProject.ext.deps.rxjava
     api rootProject.ext.deps.rxandroid
